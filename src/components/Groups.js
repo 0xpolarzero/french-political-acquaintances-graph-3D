@@ -1,109 +1,79 @@
 import { useEffect, useRef, useState } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { useSpring } from '@react-spring/three';
+import { animated, useSpring } from '@react-spring/three';
+import Individuals from './Individuals';
 import useData from '../stores/useData';
-import useEnv from '../stores/useEnv';
+import { getPositions } from '../systems/groups';
 
 const Groups = () => {
-  const [positions, setPositions] = useState({});
   const { groups } = useData();
-  const { initialCameraPosition } = useEnv();
+  const [positions, setPositions] = useState({});
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
+  const [groupRotation, setGroupRotation] = useState([0, 0, 0]);
 
   const clicked = useRef();
+
+  const { position, rotation } = useSpring({
+    position: groupPosition,
+    rotation: groupRotation,
+  });
 
   /**
    * Set positions for each group
    */
-  const getPositions = () => {
-    let positions = {};
-    const majorityGroupDistance = 3;
-    const minorityGroupDistance = 40;
-
-    // Filter the groups
-    const majorityGroups = groups.filter((group) => group.maj);
-    const oppositionGroups = groups.filter((group) => !group.maj);
-
-    // Place the groups
-    majorityGroups.forEach((group, index) => {
-      const angle = (index / majorityGroups.length) * Math.PI * 2;
-      const x = Math.cos(angle) * majorityGroupDistance;
-      const z = Math.sin(angle) * majorityGroupDistance;
-      positions[group.symbol] = [x, 0, z];
-    });
-
-    oppositionGroups.forEach((group, index) => {
-      const angle = (index / oppositionGroups.length) * Math.PI * 2;
-      const x = Math.cos(angle) * minorityGroupDistance;
-      const z = Math.sin(angle) * minorityGroupDistance;
-      positions[group.symbol] = [x, 0, z];
-    });
-
-    return positions;
-  };
 
   /**
    * Zoom
    */
   const zoomIn = (e) => {
-    console.log(e.object.userData);
     clicked.current = e.object;
+
+    // Move and rotate the group so it gets close to the camera
+    setGroupPosition([
+      -clicked.current.position.x,
+      -clicked.current.position.y + 30,
+      -clicked.current.position.z,
+    ]);
+    setGroupRotation([
+      -clicked.current.rotation.x,
+      -clicked.current.rotation.y,
+      -clicked.current.rotation.z,
+    ]);
   };
 
   const zoomOut = () => {
-    // setCameraPosition({
-    //   x: initialCameraPosition[0],
-    //   y: initialCameraPosition[1],
-    //   z: initialCameraPosition[2],
-    // });
     clicked.current = null;
-  };
 
-  useFrame(({ camera }) => {
-    if (clicked.current) {
-      //   camera.lookAt(clicked.current.position);
-      camera.position.lerp(
-        {
-          x: clicked.current.position.x,
-          y: clicked.current.position.y + 10,
-          z: clicked.current.position.z,
-        },
-        0.03,
-      );
-    } else {
-      camera.lookAt(0, 0, 0);
-    }
-    return null;
-  });
+    // Move and rotate the group back to its original position
+    setGroupPosition([0, 0, 0]);
+    setGroupRotation([0, 0, 0]);
+  };
 
   useEffect(() => {
-    setPositions(getPositions());
+    setPositions(getPositions(groups));
   }, [groups]);
 
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   return (
-    <group>
+    <animated.group
+      onPointerMissed={zoomOut}
+      position={position}
+      rotation={rotation}
+    >
       {groups.map((group) => {
         return (
-          <mesh
-            key={group.symbol}
-            position={positions[group.symbol]}
-            userData={{ group: group.group }}
-            onClick={zoomIn}
-          >
-            <sphereGeometry args={[1, 32, 32]} />
-            <meshBasicMaterial color={getRandomColor()} />
-          </mesh>
+          <group key={group.symbol}>
+            <mesh
+              position={positions[group.symbol]}
+              userData={{ group: group.group }}
+              onClick={zoomIn}
+            >
+              <sphereGeometry args={[1, 32, 32]} />
+              <meshBasicMaterial />
+            </mesh>
+            <Individuals group={group} basePosition={positions[group.symbol]} />
+          </group>
         );
       })}
-    </group>
+    </animated.group>
   );
 };
 

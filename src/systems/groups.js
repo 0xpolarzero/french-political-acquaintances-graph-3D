@@ -1,4 +1,4 @@
-export const getPositions = (groups) => {
+export const getGroupsPositions = (groups) => {
   let positions = {};
   const majorityGroupDistance = 10;
   const minorityGroupDistance = 40;

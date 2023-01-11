@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from '@react-spring/three';
 import Individuals from './Individuals';
 import useData from '../stores/useData';
-import { getPositions } from '../systems/groups';
+import { getGroupsPositions } from '../systems/groups';
+import { Float } from '@react-three/drei';
 
 const Groups = () => {
   const { groups } = useData();
@@ -49,7 +50,7 @@ const Groups = () => {
   };
 
   useEffect(() => {
-    setPositions(getPositions(groups));
+    setPositions(getGroupsPositions(groups));
   }, [groups]);
 
   return (
@@ -61,14 +62,16 @@ const Groups = () => {
       {groups.map((group) => {
         return (
           <group key={group.symbol}>
-            <mesh
-              position={positions[group.symbol]}
-              userData={{ group: group.group }}
-              onClick={zoomIn}
-            >
-              <sphereGeometry args={[1, 32, 32]} />
-              <meshBasicMaterial />
-            </mesh>
+            <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
+              <mesh
+                position={positions[group.symbol]}
+                userData={{ group: group.group }}
+                onClick={zoomIn}
+              >
+                <sphereGeometry args={[1, 32, 32]} />
+                <meshBasicMaterial />
+              </mesh>
+            </Float>
             <Individuals group={group} basePosition={positions[group.symbol]} />
           </group>
         );

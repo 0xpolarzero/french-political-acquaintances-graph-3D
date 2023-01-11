@@ -1,35 +1,20 @@
 import * as THREE from 'three';
 
 export const getIndividualPosition = (data, basePos, index, total) => {
-  // Place the individuals in a circle around the basePos
-  // The first one will be the closest to [0, 0, 0]
-  // The last one will be the farthest from [0, 0, 0]
-  // So it can't just turn around the basePos but needs to be placed
-  // from closest to [0, 0, 0] to farthest from [0, 0, 0]
+  // Calculate the angle to place the individual sphere around the basePos sphere
+  const angle = (index / total) * 2 * Math.PI;
 
-  // To calculate the angle and distance, start for a distance of 10
-  // Each 50 individuals, divide the distance by 2
-  // The end circle should be filled (if there are 120, the angle for the last 20 should be higher)
-  // Remember that the first ones need to be the closest to [0, 0, 0]
-  // So the angle needs to be lower for the first ones
+  // Calculate the distance from the basePos sphere based on the data value
+  // using a function to map the data value to a distance
+  const distanceFn = (data) => data.scoreMajorite * 10;
+  const distance = distanceFn(data);
 
-  // Calculate the distance
-  const distance = 10 / Math.pow(2, Math.floor(index / 50));
+  // Calculate the x, y, z position of the individual sphere
+  const x = basePos[0] + distance * Math.cos(angle);
+  const y = basePos[1];
+  const z = basePos[2] + distance * Math.sin(angle);
 
-  // Calculate the angle
-  const remaining = total - index;
-  const remainder = total % 50;
-  // Do const angle = ((index % 50) / 50) * Math.PI * 2;
-  // BUT if there are less than 50 remaining, calculate the angle based on the remaining
-  const angle =
-    ((index % 50) / (remaining > 50 ? 50 : remainder)) * Math.PI * 2;
-
-  // Calculate the position
-  const x = Math.cos(angle) * distance;
-  const z = Math.sin(angle) * distance;
-
-  // Return the position
-  return [basePos[0] + x, basePos[1], basePos[2] + z];
+  return [x, y, z];
 };
 
 export const getIndividualColor = (data, baseColor) => {
@@ -43,4 +28,40 @@ export const getIndividualColor = (data, baseColor) => {
 
   // Return the color
   return color;
+};
+
+export const getIndividualsPositions = (group, basePos) => {
+  const minRadius = 5;
+  const amount = group.data.length;
+  basePos = { x: basePos[0], y: basePos[1], z: basePos[2] };
+  let d = 10;
+
+  let spheres = [];
+  let currRadius = minRadius;
+  let currAmount = 0;
+  let currPhi = 0;
+  let currTheta = 0;
+  let phiStep = Math.PI / (amount / 2);
+  let thetaStep = (2 * Math.PI) / amount;
+  while (currAmount < amount) {
+    let x = basePos.x + currRadius * Math.sin(currPhi) * Math.cos(currTheta);
+    let y = basePos.y + currRadius * Math.sin(currPhi) * Math.sin(currTheta);
+    let z = basePos.z + currRadius * Math.cos(currPhi);
+    spheres.push({ x, y, z });
+    currTheta += thetaStep;
+    currPhi += phiStep;
+    currAmount++;
+    if (currAmount % amount === 0) {
+      currRadius += d;
+      currTheta = 0;
+      currPhi = 0;
+    }
+  }
+
+  let positions = [];
+  spheres.forEach((sphere) => {
+    positions.push([sphere.x, sphere.y, sphere.z]);
+  });
+
+  return positions;
 };

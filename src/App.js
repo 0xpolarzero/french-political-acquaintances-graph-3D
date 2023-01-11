@@ -1,23 +1,27 @@
 import React, { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import Graph from './components/Graph';
 import useData from './stores/useData';
+import useEnv from './stores/useEnv';
 
 const App = () => {
-  const { data, setData } = useData();
+  const { setAll, loaded } = useData();
+  const { initialCameraPosition } = useEnv();
 
   useEffect(() => {
-    setData();
+    setAll();
   }, []);
 
   return (
     <>
-      {data.length === 0 ? (
-        <div className='loading'>Loading...</div>
-      ) : (
-        <Canvas camera={{ position: [0, 0, 5] }}>
+      {loaded ? (
+        <Canvas camera={{ position: initialCameraPosition }}>
+          <OrbitControls />
           <Graph />
         </Canvas>
+      ) : (
+        <div className='loading'>Loading...</div>
       )}
     </>
   );

@@ -5,8 +5,67 @@ const DATA_URL =
   'https://www.data.gouv.fr/fr/datasets/r/092bd7bb-1543-405b-b53c-932ebb49bb8e';
 const IMAGES_BASE_URL = '/asset/images';
 
-export default create((set) => ({
+const GROUPS_INFO = {
+  Renaissance: {
+    symbol: 'RE',
+    maj: true,
+  },
+  'Rassemblement National': {
+    symbol: 'RN',
+    maj: false,
+  },
+  'La France insoumise - Nouvelle Union Populaire écologique et sociale': {
+    symbol: 'LFI-NUPES',
+    maj: false,
+  },
+  'Les Républicains': {
+    symbol: 'LR',
+    maj: false,
+  },
+  'Démocrate (MoDem et Indépendants)': {
+    symbol: 'DEM',
+    maj: true,
+  },
+  'Socialistes et apparentés (membre de l’intergroupe NUPES)': {
+    symbol: 'SOC',
+    maj: false,
+  },
+  'Horizons et apparentés': {
+    symbol: 'HOR',
+    maj: true,
+  },
+  'Écologiste - NUPES': {
+    symbol: 'ECOLO',
+    maj: false,
+  },
+  'Gauche démocrate et républicaine - NUPES': {
+    symbol: 'GDR-NUPES',
+    maj: false,
+  },
+  Libertés: {
+    symbol: 'LIOT',
+    maj: false,
+  },
+  'Non inscrit': {
+    symbol: 'NI',
+    maj: null,
+  },
+};
+
+export default create((set, get) => ({
   data: [],
+  groups: [],
+  loaded: false,
+
+  // Set all the data
+  setAll: async () => {
+    const { setData, setGroups } = get();
+    await setData();
+    setGroups();
+    set({ loaded: true });
+  },
+
+  // Global data
   setData: async () => {
     const result = await axios(DATA_URL);
     const csvData = result.data;
@@ -29,5 +88,132 @@ export default create((set) => ({
     });
 
     set({ data: formattedData });
+  },
+
+  // Groups
+  setGroups: () => {
+    const { data, getStats } = get();
+    let groups = [];
+
+    // Set the groups and the number of items in each group
+    data.forEach((d) => {
+      if (!groups.includes(d.groupe)) groups.push(d.groupe);
+    });
+
+    // Sort the groups by the number of items in each group
+    groups.sort((a, b) => {
+      const aCount = data.filter((d) => d.groupe === a).length;
+      const bCount = data.filter((d) => d.groupe === b).length;
+      return bCount - aCount;
+    });
+
+    // Remove the undefined group
+    const undefinedIndex = groups.indexOf('undefined');
+    groups.splice(undefinedIndex, 1);
+
+    // Remove any extra ""  if this is the case e.g. '"Rassemblement National"' -> 'Rassemblement National'
+    const formattedGroups = groups.map((group) => {
+      if (group[0] === '"') {
+        group = group.slice(1);
+      }
+      if (group[group.length - 1] === '"') {
+        group = group.slice(0, group.length - 1);
+      }
+
+      return group;
+    });
+
+    // For each group, add the related items from data
+    const formattedData = groups.map((group, index) => {
+      const groupData = data.filter((d) => d.groupe === group);
+      return {
+        group: formattedGroups[index],
+        symbol: GROUPS_INFO[formattedGroups[index]].symbol,
+        maj: GROUPS_INFO[formattedGroups[index]].maj,
+        data: groupData,
+      };
+    });
+
+    // Get the power stats for each group
+    const powerStats = getStats(formattedData);
+    // Add the power stats to the groups
+    formattedData.forEach((group) => {
+      group.stats = powerStats[group.group];
+      group.stats.quantity = group.data.length;
+    });
+
+    set({ groups: formattedData });
+  },
+
+  // Stats
+  getStats: (groups) => {
+    const { data } = get();
+
+    const getAverageParticipation = () => {
+      let missingData = 0;
+      let totalParticipation = 0;
+
+      data.forEach((d) => {
+        if (isNaN(Number(d.scoreParticipation))) {
+          missingData++;
+          return;
+        }
+
+        totalParticipation += Number(d.scoreParticipation);
+      });
+
+      return totalParticipation / (data.length - missingData);
+    };
+
+    const getGroupPower = (averageParticipation) => {
+      let stats = {};
+
+      // For each group, calculate the power
+      groups.forEach((group) => {
+        const groupData = group.data;
+        let groupPower = 0;
+        let missingData = 0;
+
+        groupData.forEach((d) => {
+          if (isNaN(Number(d.scoreParticipation))) {
+            // If it's not a number, set it to the average participation
+            missingData++;
+            groupPower += averageParticipation;
+          } else {
+            // Otherwise, add it to the group power
+            groupPower += Number(d.scoreParticipation);
+          }
+        });
+
+        stats[group.group] = {
+          power: {
+            value: groupPower,
+            missing: missingData,
+          },
+        };
+      });
+
+      // Get all values of power for each group...
+      const totalPower = Object.values(stats).reduce((acc, group) => {
+        return acc + group.power.value;
+      }, 0);
+
+      // ... and set their power percentage based on the total power
+      Object.keys(stats).forEach((group) => {
+        stats[group].power.percentage = (
+          (stats[group].power.value / totalPower) *
+          100
+        ).toFixed(2);
+      });
+
+      return stats;
+    };
+
+    // Calculate the average participation for all data
+    const averageParticipation = getAverageParticipation();
+    // Calculate the power for each group
+    const power = getGroupPower(averageParticipation);
+
+    return power;
   },
 }));

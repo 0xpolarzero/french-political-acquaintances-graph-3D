@@ -10,7 +10,6 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
     // let pos = [];
     // // Sort data to calculate the angle later
     // group.data.sort((a, b) => b.scoreMajorite - a.scoreMajorite);
-
     // for (let i = 0; i < group.data.length; i++) {
     //   pos.push(
     //     getIndividualPosition(
@@ -21,11 +20,11 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
     //     ),
     //   );
     // }
-
     // return pos;
     const pos = getIndividualsPositions(group, basePosition);
     console.log(pos);
-    return getIndividualsPositions(group, basePosition);
+    return pos;
+    // return getIndividualsPositions(group, basePosition);
   }, [group.data, basePosition]);
 
   return (

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import Graph from './components/Graph';
 import useData from './stores/useData';
 import useEnv from './stores/useEnv';
@@ -16,6 +17,7 @@ const App = () => {
     <>
       {loaded ? (
         <Canvas camera={{ position: initialCameraPosition }}>
+          <OrbitControls />
           <Graph />
         </Canvas>
       ) : (

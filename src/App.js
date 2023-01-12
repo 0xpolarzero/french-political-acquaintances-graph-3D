@@ -17,7 +17,7 @@ const App = () => {
     <>
       {loaded ? (
         <Canvas camera={{ position: initialCameraPosition }}>
-          <OrbitControls />
+          {/* <OrbitControls /> */}
           <Graph />
         </Canvas>
       ) : (

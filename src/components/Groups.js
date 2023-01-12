@@ -1,111 +1,99 @@
 import { useEffect, useRef, useState } from 'react';
-import { useThree } from '@react-three/fiber';
-import { animated, useSpring } from '@react-spring/three';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import Individuals from './Individuals';
 import useData from '../stores/useData';
 import { getGroupsPositions } from '../systems/groups';
-import { Float } from '@react-three/drei';
+import { Float, PresentationControls } from '@react-three/drei';
+import useEnv from '../stores/useEnv';
 
 const Groups = () => {
   const { groups: entities } = useData();
+  const { initialCameraPositionVector } = useEnv();
   const [entitiesPositions, setEntitiesPositions] = useState({});
-  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
-  const [groupRotation, setGroupRotation] = useState([0, 0, 0]);
+  const [cameraTarget, setCameraTarget] = useState(initialCameraPositionVector);
 
-  const group = useRef();
   const clicked = useRef();
-  const center = new THREE.Vector3(0, 0, 0);
-
   const { camera } = useThree();
-  const { position: springedGroupPosition, rotation: springedGroupRotation } =
-    useSpring({
-      position: groupPosition,
-      rotation: groupRotation,
-    });
 
   /**
-   * Zoom
+   * Go to object & reset
    */
-  const zoomIn = (e) => {
+  const goToObject = (e) => {
     e.stopPropagation();
     clicked.current = e.object;
-    const groupVector = new THREE.Vector3(
-      groupPosition[0],
-      groupPosition[1],
-      groupPosition[2],
-    );
+    const OFFSET = 50;
 
-    // Get the vector center -> camera
-    const centerToCamera = new THREE.Vector3();
-    centerToCamera.subVectors(camera.position, center);
+    // Target a little above the clicked object
+    const target = new THREE.Vector3()
+      .subVectors(clicked.current.position, new THREE.Vector3(0, 0, 0))
+      .normalize()
+      .multiplyScalar(OFFSET)
+      .add(clicked.current.position);
 
-    // Get the vector center -> clicked object
-    const centerToClicked = new THREE.Vector3();
-    centerToClicked.subVectors(clicked.current.position, center);
+    // Draw a vector perpendicular to center -> object
+    const vector = new THREE.Vector3()
+      .subVectors(clicked.current.position, new THREE.Vector3(0, 0, 0))
+      .normalize()
+      .cross(new THREE.Vector3(0, 1, 0))
+      .multiplyScalar(OFFSET);
+    // target.add(vector);
 
-    // Calculate the rotation that needs to be performed so that the originVector becomes the targetVector
-    const rotationEuler = new THREE.Euler();
-    rotationEuler.setFromQuaternion(
-      new THREE.Quaternion().setFromUnitVectors(
-        centerToCamera,
-        centerToClicked,
-      ),
-    );
-
-    // ! but need to pretend the angle 0 would be camera -> center
-    // ! which may not be the case
-
-    // Log new vectors for clicked->group and camera->center
-    console.log('center -> clicked', centerToClicked);
-    console.log('center -> camera', centerToCamera);
-
-    console.log('clicked position now', clicked.current.position);
-    setGroupRotation([rotationEuler.x, rotationEuler.y, rotationEuler.z]);
-
-    /**
-     * Position
-     */
-    // setGroupPosition([
-    //   -clicked.current.position.x,
-    //   -clicked.current.position.y,
-    //   -clicked.current.position.z,
-    // ]);
+    setCameraTarget(target);
   };
 
-  const zoomOut = () => {
+  const reset = () => {
     clicked.current = null;
-
-    // Move and rotate the group back to its original position
-    setGroupPosition([0, 0, 0]);
-    setGroupRotation([0, 0, 0]);
+    setCameraTarget(initialCameraPositionVector);
   };
+
+  const zoom = (e) => {
+    if (!clicked.current) return;
+
+    const zoomFactor = 0.005;
+    const zoom = e.deltaY > 0 ? zoomFactor : -zoomFactor;
+
+    // Limit the zoom in
+    if (clicked.current.position.distanceTo(cameraTarget) < 15) {
+      if (zoom < 0) return;
+      // and zoom out
+    } else if (clicked.current.position.distanceTo(cameraTarget) > 100) {
+      if (zoom > 0) return;
+    }
+
+    setCameraTarget(cameraTarget.multiplyScalar(1 + zoom));
+  };
+
+  useFrame(() => {
+    camera.position.lerp(cameraTarget, 0.02);
+    camera.lookAt(0, 0, 0);
+  });
 
   useEffect(() => {
     setEntitiesPositions(getGroupsPositions(entities));
   }, [entities]);
 
-  useEffect(() => {}, [groupRotation]);
+  useEffect(() => {
+    window.addEventListener('mousewheel', zoom);
+    return () => window.removeEventListener('mousewheel', zoom);
+  });
 
   return (
-    <animated.group
-      ref={group}
-      onPointerMissed={zoomOut}
-      position={springedGroupPosition}
-      rotation={springedGroupRotation}
-    >
+    <group onPointerMissed={reset}>
       {entities.map((group) => {
         return (
           <group key={group.symbol}>
             <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
+              {/* <PresentationControls> */}
               <mesh
                 position={entitiesPositions[group.symbol]}
                 userData={{ symbol: group.symbol }}
-                onClick={zoomIn}
+                onClick={goToObject}
               >
                 <sphereGeometry args={[1, 32, 32]} />
                 <meshBasicMaterial color={group.color} />
               </mesh>
+              {/* </PresentationControls> */}
             </Float>
             <Individuals
               group={group}
@@ -114,7 +102,7 @@ const Groups = () => {
           </group>
         );
       })}
-    </animated.group>
+    </group>
   );
 };
 

@@ -1,32 +1,5 @@
 import coordinates from './data/coordinates.json';
 
-// export const getGroupsPositions = (groups) => {
-//   let positions = {};
-//   const majorityGroupDistance = 10;
-//   const minorityGroupDistance = 40;
-
-//   // Filter the groups
-//   const majorityGroups = groups.filter((group) => group.maj);
-//   const oppositionGroups = groups.filter((group) => !group.maj);
-
-//   // Place the groups
-//   majorityGroups.forEach((group, index) => {
-//     const angle = (index / majorityGroups.length) * Math.PI * 2;
-//     const x = Number((Math.cos(angle) * majorityGroupDistance).toFixed(2));
-//     const z = Number((Math.sin(angle) * majorityGroupDistance).toFixed(2));
-//     positions[group.symbol] = [x, 0, z];
-//   });
-
-//   oppositionGroups.forEach((group, index) => {
-//     const angle = (index / oppositionGroups.length) * Math.PI * 2;
-//     const x = Number((Math.cos(angle) * minorityGroupDistance).toFixed(2));
-//     const z = Number((Math.sin(angle) * minorityGroupDistance).toFixed(2));
-//     positions[group.symbol] = [x, 0, z];
-//   });
-
-//   return positions;
-// };
-
 export const getGroupsPositions = (groups) => {
   let positions = {};
   const majorityGroupRadius = 30;

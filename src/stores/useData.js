@@ -9,46 +9,57 @@ const GROUPS_INFO = {
   Renaissance: {
     symbol: 'RE',
     maj: true,
+    color: '#5D478B',
   },
   'Rassemblement National': {
     symbol: 'RN',
     maj: false,
+    color: '#38475B',
   },
   'La France insoumise - Nouvelle Union Populaire écologique et sociale': {
     symbol: 'LFI-NUPES',
     maj: false,
+    color: '#CB3826',
   },
   'Les Républicains': {
     symbol: 'LR',
     maj: false,
+    color: '#4B63A6',
   },
   'Démocrate (MoDem et Indépendants)': {
     symbol: 'DEM',
     maj: true,
+    color: '#BD592A',
   },
   'Socialistes et apparentés (membre de l’intergroupe NUPES)': {
     symbol: 'SOC',
     maj: false,
+    color: '#C92B42',
   },
   'Horizons et apparentés': {
     symbol: 'HOR',
     maj: true,
+    color: '#5BAFC5',
   },
   'Écologiste - NUPES': {
     symbol: 'ECOLO',
     maj: false,
+    color: '#82A95D',
   },
   'Gauche démocrate et républicaine - NUPES': {
     symbol: 'GDR-NUPES',
     maj: false,
+    color: '#85231C',
   },
   Libertés: {
     symbol: 'LIOT',
     maj: false,
+    color: '#F0D456',
   },
   'Non inscrit': {
     symbol: 'NI',
     maj: null,
+    color: '#FFFFFF',
   },
 };
 
@@ -130,6 +141,7 @@ export default create((set, get) => ({
         group: formattedGroups[index],
         symbol: GROUPS_INFO[formattedGroups[index]].symbol,
         maj: GROUPS_INFO[formattedGroups[index]].maj,
+        color: GROUPS_INFO[formattedGroups[index]].color,
         data: groupData,
       };
     });

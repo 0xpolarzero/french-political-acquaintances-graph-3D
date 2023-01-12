@@ -21,9 +21,7 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
     //   );
     // }
     // return pos;
-    const pos = getIndividualsPositions(group, basePosition);
-    console.log(pos);
-    return pos;
+    return getIndividualsPositions(group, basePosition);
     // return getIndividualsPositions(group, basePosition);
   }, [group.data, basePosition]);
 

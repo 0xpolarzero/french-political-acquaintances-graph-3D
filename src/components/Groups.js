@@ -37,7 +37,7 @@ const Groups = () => {
       .normalize()
       .cross(new THREE.Vector3(0, 1, 0))
       .multiplyScalar(OFFSET);
-    // target.add(vector);
+    target.add(vector);
 
     setCameraTarget(target);
   };

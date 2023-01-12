@@ -1,33 +1,44 @@
 import { Float } from '@react-three/drei';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
+  getIndividualColor,
   getIndividualPosition,
   getIndividualsPositions,
 } from '../systems/individuals';
 
 const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
-  const positions = useMemo(() => {
-    // let pos = [];
-    // // Sort data to calculate the angle later
-    // group.data.sort((a, b) => b.scoreMajorite - a.scoreMajorite);
-    // for (let i = 0; i < group.data.length; i++) {
-    //   pos.push(
-    //     getIndividualPosition(
-    //       group.data[i],
-    //       basePosition,
-    //       i,
-    //       group.data.length,
-    //     ),
-    //   );
-    // }
-    // return pos;
-    return getIndividualsPositions(group, basePosition);
-    // return getIndividualsPositions(group, basePosition);
-  }, [group.data, basePosition]);
+  const [individuals, setIndividuals] = useState(group.data);
+  const [colors, setColors] = useState(
+    Array(group.data.length).fill(group.color),
+  );
+
+  const positions = useMemo(
+    () => getIndividualsPositions(group, basePosition),
+    [group.data, basePosition],
+  );
+
+  // const colors = useMemo(() => {
+  //   console.log(group);
+  //   return group.data.map((individual) => {
+  //     return individual.color;
+  //   });
+  // }, [group.data]);
+
+  useEffect(() => {
+    const sorted = group.data.sort((a, b) => {
+      return b.scoreMajorite - a.scoreMajorite;
+    });
+    const col = sorted.map((individual) => {
+      return getIndividualColor(individual, group.color);
+    });
+
+    setIndividuals(sorted);
+    setColors(col);
+  }, [group.data]);
 
   return (
     <group>
-      {group.data.map((individual, index) => {
+      {individuals.map((individual, index) => {
         return (
           <Float
             key={index}
@@ -37,7 +48,7 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
           >
             <mesh position={positions[index]}>
               <sphereGeometry args={[0.5, 32, 32]} />
-              <meshBasicMaterial />
+              <meshBasicMaterial color={colors[index]} />
             </mesh>
           </Float>
         );

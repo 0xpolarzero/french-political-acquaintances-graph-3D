@@ -3,3 +3,5 @@
 - Base color for groups and ligher as the individual's loyalty decreases
 
 http://www.packomania.com/
+
+[ ] Add presentation controls to allow for rotating entities

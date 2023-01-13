@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import Gradient from 'javascript-color-gradient';
-import coordinates from './data/coordinates.json';
+import COORDINATES from './data/coordinates.json';
+import GROUPS_INFO from './data/groups.json';
 
 export const getIndividualsPositions = (group, basePos) => {
-  console.log(group.stats.power.value);
   const amount = group.data.length;
-  const coords = coordinates[amount];
+  const coords = COORDINATES[amount];
 
   const positions = coords.map((coord, index) => {
     // Give it a bit more radius if the parent sphere is bigger
@@ -28,6 +28,9 @@ export const getIndividualsPositions = (group, basePos) => {
 };
 
 export const attractIndividual = (data, position) => {
+  // Don't attract if the group is a major group
+  if (GROUPS_INFO[data.groupe].maj) return position;
+
   const vecPosition = new THREE.Vector3(position[0], position[1], position[2]);
   const scoreMajorite = data.scoreMajorite ? Number(data.scoreMajorite) : 0;
   const multiplier = 0.2;

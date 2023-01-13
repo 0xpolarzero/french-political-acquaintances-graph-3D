@@ -3,11 +3,14 @@ import Gradient from 'javascript-color-gradient';
 import coordinates from './data/coordinates.json';
 
 export const getIndividualsPositions = (group, basePos) => {
+  console.log(group.stats.power.value);
   const amount = group.data.length;
   const coords = coordinates[amount];
 
   const positions = coords.map((coord, index) => {
-    const multiplier = 10;
+    // Give it a bit more radius if the parent sphere is bigger
+    const multiplier = 10 + group.stats.power.percentage / 10;
+
     const multiplied = [
       Number(coord['x']) * multiplier,
       Number(coord['y']) * multiplier,

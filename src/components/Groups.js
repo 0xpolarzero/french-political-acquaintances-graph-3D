@@ -92,7 +92,7 @@ const Groups = () => {
             <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
               {/* <PresentationControls> */}
               <Entity
-                data={{ symbol: group.symbol }}
+                data={{ symbol: group.symbol, stats: group.stats }}
                 position={entitiesPositions[group.symbol]}
                 baseColor={group.color}
                 onClick={goToObject}

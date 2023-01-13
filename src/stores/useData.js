@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { parse } from 'papaparse';
 
 const DATA_URL =
   'https://www.data.gouv.fr/fr/datasets/r/092bd7bb-1543-405b-b53c-932ebb49bb8e';
@@ -51,7 +52,7 @@ const GROUPS_INFO = {
     maj: false,
     color: '#85231C',
   },
-  Libertés: {
+  'Libertés, Indépendants, Outre-mer et Territoires': {
     symbol: 'LIOT',
     maj: false,
     color: '#F0D456',
@@ -80,16 +81,33 @@ export default create((set, get) => ({
   setData: async () => {
     const result = await axios(DATA_URL);
     const csvData = result.data;
-    const rows = csvData.split('\n');
-    const headers = rows[0].split(',');
 
-    const formattedData = rows.slice(1).map((row) => {
-      const values = row.split(',');
+    // const rows = csvData.split('\n');
+    // const headers = rows[0].split(',');
+
+    // const formattedData = rows.slice(1).map((row) => {
+    //   const values = row.split(',');
+    //   const el = headers.reduce((object, header, index) => {
+    //     return {
+    //       ...object,
+    //       [header]: values[index],
+    //       image: `${IMAGES_BASE_URL}/deputes/depute_${values[0].replace(
+    //         'PA',
+    //         '',
+    //       )}_webp.webp`,
+    //     };
+    //   }, {});
+    //   return el;
+    // });
+
+    const parsedData = parse(csvData, { header: true });
+    const headers = parsedData.meta.fields;
+    const formattedData = parsedData.data.map((row) => {
       const el = headers.reduce((object, header, index) => {
         return {
           ...object,
-          [header]: values[index],
-          image: `${IMAGES_BASE_URL}/deputes/depute_${values[0].replace(
+          [header]: row[header],
+          image: `${IMAGES_BASE_URL}/deputes/depute_${row['id'].replace(
             'PA',
             '',
           )}_webp.webp`,
@@ -97,6 +115,7 @@ export default create((set, get) => ({
       }, {});
       return el;
     });
+    console.log(formattedData);
 
     set({ data: formattedData });
   },
@@ -137,6 +156,7 @@ export default create((set, get) => ({
     // For each group, add the related items from data
     const formattedData = groups.map((group, index) => {
       const groupData = data.filter((d) => d.groupe === group);
+
       return {
         group: formattedGroups[index],
         symbol: GROUPS_INFO[formattedGroups[index]].symbol,

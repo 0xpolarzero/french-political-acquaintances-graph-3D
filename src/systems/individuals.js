@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Gradient from 'javascript-color-gradient';
 import coordinates from './data/coordinates.json';
 
 export const getIndividualsPositions = (group, basePos) => {
@@ -46,15 +47,14 @@ export const sortCoordinates = (amount) => {
 };
 
 export const getIndividualColor = (data, baseColor) => {
-  // Based on the baseColor and data.scoreLoyaute, calculate the color
-  // The higher the scoreLoyaute, the closer to the baseColor
-  // The lower the scoreLoyaute, the closer to white
+  let num = Number(data.scoreLoyaute) * 10;
+  // Limit to 0.01 -> 10
+  num = num > 10 ? 10 : num <= 0 ? 0.01 : num;
 
-  // Calculate the color
-  const threeColor = new THREE.Color(baseColor);
-  const color = threeColor.clone();
-  color.lerp(new THREE.Color(0xffffff), 1 - data.scoreLoyaute);
+  const color = new Gradient()
+    .setColorGradient('#ffffff', baseColor)
+    .setMidpoint(10)
+    .getColor(num);
 
-  // Return the color
   return color;
 };

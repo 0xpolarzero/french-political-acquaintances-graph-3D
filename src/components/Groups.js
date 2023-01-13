@@ -9,7 +9,7 @@ import useEnv from '../stores/useEnv';
 
 const Groups = () => {
   const { groups: entities } = useData();
-  const { initialCameraPositionVector } = useEnv();
+  const { initialCameraPositionVector, cameraLookAt } = useEnv();
   const [entitiesPositions, setEntitiesPositions] = useState({});
   const [cameraTarget, setCameraTarget] = useState(initialCameraPositionVector);
 
@@ -54,7 +54,7 @@ const Groups = () => {
     const zoom = e.deltaY > 0 ? zoomFactor : -zoomFactor;
 
     // Limit the zoom in
-    if (clicked.current.position.distanceTo(cameraTarget) < 15) {
+    if (clicked.current.position.distanceTo(cameraTarget) < 25) {
       if (zoom < 0) return;
       // and zoom out
     } else if (clicked.current.position.distanceTo(cameraTarget) > 100) {
@@ -66,7 +66,11 @@ const Groups = () => {
 
   useFrame(() => {
     camera.position.lerp(cameraTarget, 0.02);
-    camera.lookAt(0, 0, 0);
+    cameraLookAt.lerp(
+      clicked.current ? clicked.current.position : new THREE.Vector3(0, 0, 0),
+      0.02,
+    );
+    camera.lookAt(cameraLookAt);
   });
 
   useEffect(() => {

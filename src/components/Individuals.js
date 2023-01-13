@@ -1,40 +1,29 @@
-import { Float } from '@react-three/drei';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  getIndividualColor,
-  getIndividualPosition,
-  getIndividualsPositions,
-} from '../systems/individuals';
+import { Float } from '@react-three/drei';
+import Entity from './Entity';
+import { getIndividualsPositions } from '../systems/individuals';
 
 const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
-  const [individuals, setIndividuals] = useState(group.data);
-  const [colors, setColors] = useState(
-    Array(group.data.length).fill(group.color),
-  );
+  // Get positions (sorted by their proximity to (0, 0, 0))
+  const positions = useMemo(() => {
+    return getIndividualsPositions(group, basePosition);
+  }, [group, basePosition]);
 
-  const positions = useMemo(
-    () => getIndividualsPositions(group, basePosition),
-    [group.data, basePosition],
-  );
-
-  // const colors = useMemo(() => {
-  //   console.log(group);
-  //   return group.data.map((individual) => {
-  //     return individual.color;
-  //   });
-  // }, [group.data]);
-
-  useEffect(() => {
-    const sorted = group.data.sort((a, b) => {
-      return b.scoreMajorite - a.scoreMajorite;
-    });
-    const col = sorted.map((individual) => {
-      return getIndividualColor(individual, group.color);
-    });
-
-    setIndividuals(sorted);
-    setColors(col);
-  }, [group.data]);
+  const individuals = useMemo(() => {
+    return (
+      group.data
+        // Sort by loyalty (less loyal first)
+        .sort((a, b) => {
+          return b.scoreMajorite - a.scoreMajorite;
+        })
+        .map((individual, index) => {
+          return {
+            ...individual,
+            position: positions[index],
+          };
+        })
+    );
+  }, [group, positions]);
 
   return (
     <group>
@@ -46,10 +35,13 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
             floatIntensity={0.1}
             rotationIntensity={0.1}
           >
-            <mesh position={positions[index]}>
-              <sphereGeometry args={[0.5, 32, 32]} />
-              <meshBasicMaterial color={colors[index]} />
-            </mesh>
+            <Entity
+              data={individual}
+              position={positions[index]}
+              baseColor={group.color}
+              onClick={null}
+              type='individual'
+            />
           </Float>
         );
       })}

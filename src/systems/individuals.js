@@ -3,10 +3,10 @@ import Gradient from 'javascript-color-gradient';
 import coordinates from './data/coordinates.json';
 
 export const getIndividualsPositions = (group, basePos) => {
-  const sorted = sortCoordinates(group.data.length);
-  const positions = sorted.map((coord, index) => {
-    // Base the multiplier on the length so all groups have the same size
-    // const multiplier = group.data.length / 10;
+  const amount = group.data.length;
+  const coords = coordinates[amount];
+
+  const positions = coords.map((coord, index) => {
     const multiplier = 10;
     const multiplied = [
       Number(coord['x']) * multiplier,
@@ -24,30 +24,36 @@ export const getIndividualsPositions = (group, basePos) => {
   return positions;
 };
 
-export const attractIndividual = (data, basePos) => {
-  // Calculate the attraction to 0,0,0
-  // Get the angle of its reference to 0,0,0 based on the basePos
+export const attractIndividual = (data, position) => {
+  const vecPosition = new THREE.Vector3(position[0], position[1], position[2]);
+  const scoreMajorite = data.scoreMajorite ? Number(data.scoreMajorite) : 0;
+  const multiplier = 0.2;
+
+  const vecToCenter = new THREE.Vector3(0, 0, 0).sub(vecPosition);
+
+  const vecUpdated = vecPosition.add(
+    vecToCenter.multiplyScalar(scoreMajorite * multiplier),
+  );
+  const updatedPos = [vecUpdated.x, vecUpdated.y, vecUpdated.z];
+
+  return updatedPos;
 };
 
-export const sortCoordinates = (amount) => {
-  const positions = coordinates[amount];
-  // Sort the positions based on their proximity to 0,0,0
-  const sorted = positions.sort((a, b) => {
-    const aDist = Math.sqrt(
-      Math.pow(a.x, 2) + Math.pow(a.y, 2) + Math.pow(a.z, 2),
-    );
-    const bDist = Math.sqrt(
-      Math.pow(b.x, 2) + Math.pow(b.y, 2) + Math.pow(b.z, 2),
-    );
+// export const sortCoordinates = (positions, amount) => {
+//   // Sort the positions based on their proximity to 0,0,0
+//   const sorted = positions.sort((a, b) => {
+//     const aDist = Math.hypot(a.x, a.y, a.z);
+//     const bDist = Math.hypot(b.x, b.y, b.z);
 
-    return aDist - bDist;
-  });
+//     return aDist - bDist;
+//   });
 
-  return sorted;
-};
+//   return sorted;
+// };
 
 export const getIndividualColor = (data, baseColor) => {
-  let num = Number(data.scoreLoyaute) * 10;
+  const loyalty = data.scoreLoyaute ? Number(data.scoreLoyaute) : 0.5;
+  let num = loyalty * 10;
   // Limit to 0.01 -> 10
   num = num > 10 ? 10 : num <= 0 ? 0.01 : num;
 

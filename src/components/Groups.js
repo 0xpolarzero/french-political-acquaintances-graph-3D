@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { animated, useSpring } from '@react-spring/three';
 import * as THREE from 'three';
 import Individuals from './Individuals';
+import Entity from './Entity';
 import useData from '../stores/useData';
 import { getGroupsPositions } from '../systems/groups';
 import { Float, PresentationControls } from '@react-three/drei';
@@ -22,7 +24,7 @@ const Groups = () => {
   const goToObject = (e) => {
     e.stopPropagation();
     clicked.current = e.object;
-    const OFFSET = 50;
+    const OFFSET = 30;
 
     // Target a little above the clicked object
     const target = new THREE.Vector3()
@@ -35,7 +37,7 @@ const Groups = () => {
     const vector = new THREE.Vector3()
       .subVectors(clicked.current.position, new THREE.Vector3(0, 0, 0))
       .normalize()
-      .cross(new THREE.Vector3(0, 1, 0))
+      .cross(new THREE.Vector3(0, 2, 0))
       .multiplyScalar(OFFSET);
     target.add(vector);
 
@@ -86,24 +88,23 @@ const Groups = () => {
     <group onPointerMissed={reset}>
       {entities.map((group) => {
         return (
-          <group key={group.symbol}>
+          <animated.group key={group.symbol}>
             <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
               {/* <PresentationControls> */}
-              <mesh
+              <Entity
+                data={{ symbol: group.symbol }}
                 position={entitiesPositions[group.symbol]}
-                userData={{ symbol: group.symbol }}
+                baseColor={group.color}
                 onClick={goToObject}
-              >
-                <sphereGeometry args={[1, 32, 32]} />
-                <meshBasicMaterial color={group.color} />
-              </mesh>
+                type='group'
+              />
               {/* </PresentationControls> */}
             </Float>
             <Individuals
               group={group}
               basePosition={entitiesPositions[group.symbol]}
             />
-          </group>
+          </animated.group>
         );
       })}
     </group>

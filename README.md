@@ -4,7 +4,7 @@
 
 http://www.packomania.com/
 
-[ ] Add presentation controls to allow for rotating entities
+[ ] Fix color not adapting
 
 Statistiques:
 datan.fr

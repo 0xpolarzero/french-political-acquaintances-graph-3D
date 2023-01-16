@@ -8,4 +8,7 @@ export default create((set) => ({
 
   hovered: null,
   setHovered: (hovered) => set({ hovered }),
+
+  group: null,
+  setGroup: (group) => set({ group }),
 }));

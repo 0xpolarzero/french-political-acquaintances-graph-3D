@@ -5,6 +5,8 @@
 http://www.packomania.com/
 
 [ ] Fix color not adapting
+[ ] Keep group name in hint when clicked.current
+[ ] Display informations in modal on click on hint
 [ ] use scoreCohesion to break the sphere more or less (fragment)
 [ ] use scoreRose/women to display on the sphere
 

@@ -9,7 +9,7 @@ const Graph = () => {
   const { hovered } = useInteract();
 
   useEffect(() => {
-    console.log(hovered);
+    // console.log(hovered);
   }, [hovered]);
 
   return (

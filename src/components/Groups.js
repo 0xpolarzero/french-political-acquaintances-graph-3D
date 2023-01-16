@@ -10,7 +10,7 @@ import useInteract from '../stores/useInteract';
 
 const Groups = () => {
   const { organizedData: entities } = useData();
-  const { hovered, setHovered } = useInteract();
+  const { setGroup, setHovered } = useInteract();
   const [entitiesPositions, setEntitiesPositions] = useState({});
 
   const clicked = useRef();
@@ -28,30 +28,21 @@ const Groups = () => {
       // window.removeEventListener('mousewheel', zoom);
       window.removeEventListener('keydown', controls.turnAroundObject);
     };
-  });
+  }, [controls]);
+
+  useEffect(() => {
+    if (clicked.current) {
+      setGroup(clicked.current.userData);
+    } else {
+      setGroup(null);
+    }
+  }, [clicked.current, setGroup]);
 
   return (
     <group onPointerMissed={controls.reset}>
       {entities.map((group) => {
         return (
           <animated.group key={group.id}>
-            <Html position={entitiesPositions[group.libelleAbrev]}>
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  color: 'white',
-                  fontSize: '1.5rem',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  pointerEvents: 'none',
-                }}
-              >
-                {group.libelleAbrev}
-              </div>
-            </Html>
             <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
               {/* <PresentationControls> */}
               <Entity

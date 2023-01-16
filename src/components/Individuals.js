@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { Float } from '@react-three/drei';
 import Entity from './Entity';
 import { getIndividualsPositions } from '../systems/individuals';
+import useInteract from '../stores/useInteract';
 
 const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
+  const { hovered, setHovered } = useInteract();
+
   // Get positions (sorted by their proximity to (0, 0, 0))
   const positions = useMemo(() => {
     return getIndividualsPositions(group, basePosition);
@@ -38,9 +41,10 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
             <Entity
               data={individual}
               position={positions[index]}
-              baseColor={group.color}
               onClick={null}
               type='individual'
+              onMouseEnter={() => setHovered(individual, 'individual')}
+              onMouseLeave={() => setHovered(null)}
             />
           </Float>
         );

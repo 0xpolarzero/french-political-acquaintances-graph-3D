@@ -3,11 +3,18 @@ import { useEffect } from 'react';
 import { attractIndividual, getIndividualColor } from '../systems/individuals';
 import useGraphics from '../stores/useGraphics';
 
-const Entity = ({ data, position, baseColor, onClick, type }) => {
+const Entity = ({
+  data,
+  position,
+  onClick,
+  type,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   const { highQuality } = useGraphics();
 
   const color =
-    type === 'individual' ? getIndividualColor(data, baseColor) : baseColor;
+    type === 'individual' ? getIndividualColor(data) : data.couleurAssociee;
 
   const scale =
     type === 'individual'
@@ -34,17 +41,19 @@ const Entity = ({ data, position, baseColor, onClick, type }) => {
       userData={data}
       scale={scale}
       onClick={onClick ? onClick : logIndividual}
+      onPointerEnter={onMouseEnter}
+      onPointerLeave={onMouseLeave}
     >
       <sphereGeometry args={[1, 32, 32]} />
       {highQuality ? (
         // <meshStandardMaterial color={color || baseColor} />
         <meshPhysicalMaterial
-          color={color || baseColor}
+          color={color || data.color}
           wireframe={type === 'group'}
         />
       ) : (
         <meshBasicMaterial
-          color={color || baseColor}
+          color={color || data.color}
           wireframe={type === 'group'}
         />
       )}

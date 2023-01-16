@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { parse } from 'papaparse';
-import GROUPS_INFO from '../systems/data/groups.json';
 
 const DATA_DEPUTEES_URL =
   'https://www.data.gouv.fr/fr/datasets/r/092bd7bb-1543-405b-b53c-932ebb49bb8e';
@@ -17,8 +16,8 @@ export default create((set, get) => ({
   // Set all the data
   setData: async () => {
     const { setDataDeputees, setDataGroups, organizeData } = get();
-    await setDataDeputees();
     await setDataGroups();
+    await setDataDeputees();
     organizeData();
     set({ loaded: true });
   },
@@ -32,9 +31,15 @@ export default create((set, get) => ({
     const parsedData = parse(csvData, { header: true });
     const headers = parsedData.meta.fields;
     const formattedData = parsedData.data.map((row) => {
+      const group = data.groups.find(
+        (g) => g.libelleAbrev === row['groupeAbrev'],
+      );
+
       const el = headers.reduce((object, header, index) => {
         return {
           ...object,
+          maj: group?.positionPolitique === 'Majoritaire',
+          color: group?.couleurAssociee,
           [header]: row[header],
           image: `${IMAGES_BASE_URL}/deputes/depute_${row['id'].replace(
             'PA',
@@ -42,10 +47,15 @@ export default create((set, get) => ({
           )}_webp.webp`,
         };
       }, {});
-      return el;
+
+      if (el.id && el.nom) return el;
+      return null;
     });
 
-    set({ data: { ...data, deputees: formattedData } });
+    // Check if there is any null value
+    const filteredData = formattedData.filter((d) => d !== null);
+
+    set({ data: { ...data, deputees: filteredData } });
   },
 
   setDataGroups: async () => {
@@ -62,10 +72,15 @@ export default create((set, get) => ({
           [header]: row[header],
         };
       }, {});
-      return el;
+
+      if (el.libelleAbrev) return el;
+      return null;
     });
 
-    set({ data: { ...data, groups: formattedData } });
+    // Check if there is any null value
+    const filteredData = formattedData.filter((d) => d !== null);
+
+    set({ data: { ...data, groups: filteredData } });
   },
 
   // Gather data and create groups
@@ -88,8 +103,10 @@ export default create((set, get) => ({
     const powerStats = getStats(groups);
     // Add the power stats to the groups
     groups.forEach((group) => {
-      group.stats = powerStats[group.group];
-      group.stats.quantity = group.data.length;
+      group.stats = {
+        ...powerStats[group.libelleAbrev],
+        quantity: group.data.length,
+      };
     });
 
     set({ organizedData: groups });
@@ -135,7 +152,7 @@ export default create((set, get) => ({
           }
         });
 
-        stats[group.group] = {
+        stats[group.libelleAbrev] = {
           power: {
             value: groupPower,
             missing: missingData,

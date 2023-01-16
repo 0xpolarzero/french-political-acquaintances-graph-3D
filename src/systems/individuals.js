@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import Gradient from 'javascript-color-gradient';
 import COORDINATES from './data/coordinates.json';
-import GROUPS_INFO from './data/groups.json';
 
 export const getIndividualsPositions = (group, basePos) => {
   const amount = group.data.length;
@@ -29,7 +28,7 @@ export const getIndividualsPositions = (group, basePos) => {
 
 export const attractIndividual = (data, position) => {
   // Don't attract if the group is a major group
-  if (GROUPS_INFO[data.groupe].maj) return position;
+  if (data.maj) return position;
 
   const vecPosition = new THREE.Vector3(position[0], position[1], position[2]);
   const scoreMajorite = data.scoreMajorite ? Number(data.scoreMajorite) : 0;
@@ -57,14 +56,14 @@ export const attractIndividual = (data, position) => {
 //   return sorted;
 // };
 
-export const getIndividualColor = (data, baseColor) => {
+export const getIndividualColor = (data) => {
   const loyalty = data.scoreLoyaute ? Number(data.scoreLoyaute) : 0.5;
   let num = loyalty * 10;
   // Limit to 0.01 -> 10
   num = num > 10 ? 10 : num <= 0 ? 0.01 : num;
 
   const color = new Gradient()
-    .setColorGradient('#ffffff', baseColor)
+    .setColorGradient('#ffffff', data.color)
     .setMidpoint(10)
     .getColor(num);
 

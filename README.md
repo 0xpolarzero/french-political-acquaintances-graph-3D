@@ -5,6 +5,8 @@
 http://www.packomania.com/
 
 [ ] Fix color not adapting
+[ ] use scoreCohesion to break the sphere more or less (fragment)
+[ ] use scoreRose/women to display on the sphere
 
 Statistiques:
 datan.fr

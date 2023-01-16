@@ -4,11 +4,13 @@ import Individuals from './Individuals';
 import Entity from './Entity';
 import useData from '../stores/useData';
 import { getGroupsPositions } from '../systems/groups';
-import { Float, PresentationControls } from '@react-three/drei';
+import { Float, Html, PresentationControls } from '@react-three/drei';
 import useControls from '../hooks/useControls';
+import useInteract from '../stores/useInteract';
 
 const Groups = () => {
-  const { groups: entities } = useData();
+  const { organizedData: entities } = useData();
+  const { hovered, setHovered } = useInteract();
   const [entitiesPositions, setEntitiesPositions] = useState({});
 
   const clicked = useRef();
@@ -32,21 +34,39 @@ const Groups = () => {
     <group onPointerMissed={controls.reset}>
       {entities.map((group) => {
         return (
-          <animated.group key={group.symbol}>
+          <animated.group key={group.id}>
+            <Html position={entitiesPositions[group.libelleAbrev]}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: 'white',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  pointerEvents: 'none',
+                }}
+              >
+                {group.libelleAbrev}
+              </div>
+            </Html>
             <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
               {/* <PresentationControls> */}
               <Entity
-                data={{ symbol: group.symbol, stats: group.stats }}
-                position={entitiesPositions[group.symbol]}
-                baseColor={group.color}
+                data={group}
+                position={entitiesPositions[group.libelleAbrev]}
                 onClick={controls.goToObject}
                 type='group'
+                onMouseEnter={() => setHovered(group, 'group')}
+                onMouseLeave={() => setHovered(null)}
               />
               {/* </PresentationControls> */}
             </Float>
             <Individuals
               group={group}
-              basePosition={entitiesPositions[group.symbol]}
+              basePosition={entitiesPositions[group.libelleAbrev]}
             />
           </animated.group>
         );

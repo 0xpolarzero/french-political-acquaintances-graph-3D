@@ -3,45 +3,31 @@ import axios from 'axios';
 import { parse } from 'papaparse';
 import GROUPS_INFO from '../systems/data/groups.json';
 
-const DATA_URL =
+const DATA_DEPUTEES_URL =
   'https://www.data.gouv.fr/fr/datasets/r/092bd7bb-1543-405b-b53c-932ebb49bb8e';
+const DATA_GROUPS_URL =
+  'https://www.data.gouv.fr/fr/datasets/r/4612d596-9a78-4ec6-b60c-ccc1ee11f8c0';
 const IMAGES_BASE_URL = '/asset/images';
 
 export default create((set, get) => ({
-  data: [],
-  groups: [],
+  data: { deputees: [], groups: [] },
+  organizedData: [],
   loaded: false,
 
   // Set all the data
-  setAll: async () => {
-    const { setData, setGroups } = get();
-    await setData();
-    setGroups();
+  setData: async () => {
+    const { setDataDeputees, setDataGroups, organizeData } = get();
+    await setDataDeputees();
+    await setDataGroups();
+    organizeData();
     set({ loaded: true });
   },
 
   // Global data
-  setData: async () => {
-    const result = await axios(DATA_URL);
+  setDataDeputees: async () => {
+    const { data } = get();
+    const result = await axios(DATA_DEPUTEES_URL);
     const csvData = result.data;
-
-    // const rows = csvData.split('\n');
-    // const headers = rows[0].split(',');
-
-    // const formattedData = rows.slice(1).map((row) => {
-    //   const values = row.split(',');
-    //   const el = headers.reduce((object, header, index) => {
-    //     return {
-    //       ...object,
-    //       [header]: values[index],
-    //       image: `${IMAGES_BASE_URL}/deputes/depute_${values[0].replace(
-    //         'PA',
-    //         '',
-    //       )}_webp.webp`,
-    //     };
-    //   }, {});
-    //   return el;
-    // });
 
     const parsedData = parse(csvData, { header: true });
     const headers = parsedData.meta.fields;
@@ -58,66 +44,55 @@ export default create((set, get) => ({
       }, {});
       return el;
     });
-    console.log(formattedData);
 
-    set({ data: formattedData });
+    set({ data: { ...data, deputees: formattedData } });
   },
 
-  // Groups
-  setGroups: () => {
+  setDataGroups: async () => {
+    const { data } = get();
+    const result = await axios(DATA_GROUPS_URL);
+    const csvData = result.data;
+
+    const parsedData = parse(csvData, { header: true });
+    const headers = parsedData.meta.fields;
+    const formattedData = parsedData.data.map((row) => {
+      const el = headers.reduce((object, header, index) => {
+        return {
+          ...object,
+          [header]: row[header],
+        };
+      }, {});
+      return el;
+    });
+
+    set({ data: { ...data, groups: formattedData } });
+  },
+
+  // Gather data and create groups
+  organizeData: () => {
     const { data, getStats } = get();
-    let groups = [];
+    let groups = data.groups;
 
-    // Set the groups and the number of items in each group
-    data.forEach((d) => {
-      if (!groups.includes(d.groupe)) groups.push(d.groupe);
-    });
-
-    // Sort the groups by the number of items in each group
-    groups.sort((a, b) => {
-      const aCount = data.filter((d) => d.groupe === a).length;
-      const bCount = data.filter((d) => d.groupe === b).length;
-      return bCount - aCount;
-    });
-
-    // Remove the undefined group
-    const undefinedIndex = groups.indexOf('undefined');
-    groups.splice(undefinedIndex, 1);
-
-    // Remove any extra ""  if this is the case e.g. '"Rassemblement National"' -> 'Rassemblement National'
-    const formattedGroups = groups.map((group) => {
-      if (group[0] === '"') {
-        group = group.slice(1);
-      }
-      if (group[group.length - 1] === '"') {
-        group = group.slice(0, group.length - 1);
-      }
-
-      return group;
-    });
-
-    // For each group, add the related items from data
-    const formattedData = groups.map((group, index) => {
-      const groupData = data.filter((d) => d.groupe === group);
-
+    // For each group, add the members
+    groups = groups.map((group) => {
+      const members = data.deputees.filter(
+        (d) => d.groupeAbrev === group.libelleAbrev,
+      );
       return {
-        group: formattedGroups[index],
-        symbol: GROUPS_INFO[formattedGroups[index]].symbol,
-        maj: GROUPS_INFO[formattedGroups[index]].maj,
-        color: GROUPS_INFO[formattedGroups[index]].color,
-        data: groupData,
+        ...group,
+        data: members,
       };
     });
 
     // Get the power stats for each group
-    const powerStats = getStats(formattedData);
+    const powerStats = getStats(groups);
     // Add the power stats to the groups
-    formattedData.forEach((group) => {
+    groups.forEach((group) => {
       group.stats = powerStats[group.group];
       group.stats.quantity = group.data.length;
     });
 
-    set({ groups: formattedData });
+    set({ organizedData: groups });
   },
 
   // Stats
@@ -128,13 +103,13 @@ export default create((set, get) => ({
       let missingData = 0;
       let totalParticipation = 0;
 
-      data.forEach((d) => {
-        if (isNaN(Number(d.scoreParticipation))) {
+      groups.forEach((g) => {
+        if (isNaN(Number(g.scoreParticipation))) {
           missingData++;
           return;
         }
 
-        totalParticipation += Number(d.scoreParticipation);
+        totalParticipation += Number(g.scoreParticipation);
       });
 
       return totalParticipation / (data.length - missingData);

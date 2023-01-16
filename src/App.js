@@ -5,11 +5,11 @@ import useData from './stores/useData';
 import useEnv from './stores/useEnv';
 
 const App = () => {
-  const { setAll, loaded } = useData();
+  const { setData, loaded } = useData();
   const { initialCameraPosition } = useEnv();
 
   useEffect(() => {
-    setAll();
+    setData();
   }, []);
 
   return (

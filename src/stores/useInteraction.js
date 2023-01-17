@@ -2,11 +2,12 @@ import { create } from 'zustand';
 
 export default create((set, get) => ({
   // Search
-  search: '',
-  searching: false,
-  setSearch: (search) => set({ search }),
-  setSearching: (searching) => set({ searching }),
-  onSearch: (search) => {},
+  search: null,
+  onSearch: (value, data) => {
+    console.log(data);
+    set({ search: data });
+  },
+  onClear: () => set({ search: null }),
 
   // Hovered
   hovered: { item: null, type: null },

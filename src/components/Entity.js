@@ -13,20 +13,31 @@ const Entity = ({
   onMouseLeave,
 }) => {
   const { highQuality } = useGraphics();
-  const { hovered } = useInteraction();
+  const { hovered, search } = useInteraction();
 
-  const color =
-    type === 'individual' ? getIndividualColor(data) : data.couleurAssociee;
+  const color = search
+    ? search.item.id === data.id
+      ? 'red'
+      : 'white'
+    : type === 'individual'
+    ? getIndividualColor(data)
+    : data.couleurAssociee;
 
   let scale =
     type === 'individual'
       ? // Scale the score participation that is between 0 and 1 into 0.3 and 1.5
         0.5 * (data.scoreParticipation * 1.2 + 0.3)
       : 1.5 + data.stats.power.percentage / 10;
+  // Increase the scale if it's hovered
   if (hovered.item && hovered.item.id === data.id) {
     if (type === 'group') scale *= 1.5;
     if (type === 'individual') scale *= 2;
   }
+  // Increase the scale if it's searched and decrease other entities
+  if (search && search.item.id === data.id) scale *= 1.5;
+  if (search && search.item.id !== data.id) scale *= 0.5;
+
+  const opacity = search ? (search.item.id === data.id ? 1 : 0.2) : 1;
 
   const { pos } = useSpring({
     from: { pos: [0, 0, 0] },
@@ -62,11 +73,18 @@ const Entity = ({
         //   color={color || data.color}
         //   wireframe={type === 'group'}
         // />
-        <meshStandardMaterial color={color} wireframe={type === 'group'} />
+        <meshStandardMaterial
+          color={color}
+          wireframe={type === 'group'}
+          opacity={opacity}
+          transparent
+        />
       ) : (
         <meshBasicMaterial
-          color={color || data.color}
+          color={color}
           wireframe={type === 'group'}
+          opacity={opacity}
+          transparent
         />
       )}
     </animated.mesh>

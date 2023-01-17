@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { ImSphere, ImUser } from 'react-icons/im';
 import { BsArrowBarLeft } from 'react-icons/bs';
-import { Input, Popover } from 'antd';
+import { AutoComplete, Popover } from 'antd';
 import useData from '../stores/useData';
 import useInterface from '../stores/useInterface';
 import useInteraction from '../stores/useInteraction';
+import { searchSystem } from '../systems/search';
 
 const Interface = () => {
   return (
@@ -45,14 +46,16 @@ const Overlay = () => {
 };
 
 const Hints = () => {
+  const { organizedData: data } = useData();
   const { isInterfaceVisible, setIsInterfaceVisible } = useInterface();
-  const { hovered, group, onSearch } = useInteraction();
-  const { Search } = Input;
+  const { hovered, group, onSearch, onClear } = useInteraction();
+
+  const search = searchSystem(data, onSearch, onClear);
 
   return (
     <>
       <div className='interface search'>
-        <Search placeholder='Rechercher un député' onSearch={onSearch} />
+        <AutoComplete {...search} />
       </div>
       <div className='interface hints'>
         <div className='left'>
@@ -87,7 +90,7 @@ const Hints = () => {
           {/* Show interface on click */}
           <div className='action'>
             {hovered.type === 'group'
-              ? hovered.item.id === group.id
+              ? group && hovered.item.id === group.id
                 ? "Afficher plus d'informations sur le groupe"
                 : "Naviguer jusqu'au groupe"
               : hovered.type === 'individual'

@@ -35,8 +35,8 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
           <Float
             key={index}
             speed={1}
-            floatIntensity={0.1}
-            rotationIntensity={0.1}
+            floatIntensity={0.01}
+            rotationIntensity={0.01}
           >
             <Entity
               data={individual}

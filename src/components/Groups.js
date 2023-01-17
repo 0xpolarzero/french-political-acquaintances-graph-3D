@@ -43,7 +43,7 @@ const Groups = () => {
       {entities.map((group) => {
         return (
           <animated.group key={group.id}>
-            <Float speed={1} floatIntensity={0.1} rotationIntensity={0.1}>
+            <Float speed={1} floatIntensity={0.05} rotationIntensity={0.05}>
               {/* <PresentationControls> */}
               <Entity
                 data={group}

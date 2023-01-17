@@ -31,13 +31,13 @@ export const attractIndividual = (data, position) => {
   if (data.maj) return position;
 
   const vecPosition = new THREE.Vector3(position[0], position[1], position[2]);
-  const scoreMajorite = data.scoreMajorite ? Number(data.scoreMajorite) : 0;
+  const majorityScore = data.majorityScore ? Number(data.majorityScore) : 0;
   const multiplier = 0.2;
 
   const vecToCenter = new THREE.Vector3(0, 0, 0).sub(vecPosition);
 
   const vecUpdated = vecPosition.add(
-    vecToCenter.multiplyScalar(scoreMajorite * multiplier),
+    vecToCenter.multiplyScalar(majorityScore * multiplier),
   );
   const updatedPos = [vecUpdated.x, vecUpdated.y, vecUpdated.z];
 
@@ -57,7 +57,7 @@ export const attractIndividual = (data, position) => {
 // };
 
 export const getIndividualColor = (data) => {
-  const loyalty = data.scoreLoyaute ? Number(data.scoreLoyaute) : 0.5;
+  const loyalty = data.loyaltyScore ? Number(data.loyaltyScore) : 0.5;
   let num = loyalty * 10;
   // Limit to 0.01 -> 10
   num = num > 10 ? 10 : num <= 0 ? 0.01 : num;

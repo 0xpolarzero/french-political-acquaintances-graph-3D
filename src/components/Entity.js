@@ -21,12 +21,12 @@ const Entity = ({
       : 'white'
     : type === 'individual'
     ? getIndividualColor(data)
-    : data.couleurAssociee;
+    : data.associatedColor;
 
   let scale =
     type === 'individual'
       ? // Scale the score participation that is between 0 and 1 into 0.3 and 1.5
-        0.5 * (data.scoreParticipation * 1.2 + 0.3)
+        0.5 * (data.participationScore * 1.2 + 0.3)
       : 1.5 + data.stats.power.percentage / 10;
   // Increase the scale if it's hovered
   if (hovered.item && hovered.item.id === data.id) {
@@ -54,7 +54,7 @@ const Entity = ({
 
   const logIndividual = (e) => {
     e.stopPropagation();
-    console.log(e.object.userData.scoreLoyaute);
+    console.log(e.object.userData.loyaltyScore);
     console.log(e.object.userData);
   };
 

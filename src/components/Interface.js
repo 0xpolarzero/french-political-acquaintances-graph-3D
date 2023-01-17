@@ -29,12 +29,12 @@ const Overlay = () => {
         Passer la souris sur un groupe pour voir le nom complet
         {data.map((group) => {
           return (
-            <Popover content={group.libelle} key={group.id}>
+            <Popover content={group.name} key={group.id}>
               {/* <div
                 key={group.id}
-                style={{ color: group.couleurAssociee, cursor: 'pointer' }}
+                style={{ color: group.associatedColor, cursor: 'pointer' }}
               > */}
-              {group.libelleAbrege}
+              {group.briefName}
               <ImSphere />
               {/* </div> */}
             </Popover>
@@ -74,7 +74,7 @@ const Hints = () => {
             <ImUser />
             {hovered && hovered.type === 'individual' ? (
               <span className='content'>
-                {hovered.item.prenom} {hovered.item.nom}
+                {hovered.item.firstName} {hovered.item.lastName}
               </span>
             ) : (
               <span className='content'>_</span>
@@ -87,10 +87,10 @@ const Hints = () => {
             {/* Show complete name on hover */}
             {hovered.item && hovered.type === 'group' ? (
               <>
-                <span className='content'>{hovered.item.libelleAbrev}</span>
+                <span className='content'>{hovered.item.shortName}</span>
               </>
             ) : group ? (
-              <span className='content'>{group.libelleAbrev}</span>
+              <span className='content'>{group.shortName}</span>
             ) : (
               <>
                 <span className='content'>_</span>

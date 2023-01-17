@@ -3,18 +3,18 @@ export const searchSystem = (data, onSearch, onClear) => {
     // Return items with value and type for all groups, and all individuals in groups
     return [
       {
-        value: group.libelleAbrev,
+        value: group.shortName,
         type: 'group',
         item: group,
       },
       {
-        value: group.libelle,
+        value: group.name,
         type: 'group',
         item: group,
       },
       ...group.data.map((depute) => {
         return {
-          value: `${depute.prenom} ${depute.nom}`,
+          value: `${depute.firstName} ${depute.lastName}`,
           type: 'individual',
           item: depute,
           group: group,

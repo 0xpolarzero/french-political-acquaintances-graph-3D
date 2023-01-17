@@ -6,7 +6,7 @@ export const getGroupsPositions = (groups) => {
   const minorityGroupRadius = 80;
 
   // Filter the groups
-  const isMaj = (group) => group.positionPolitique === 'Majoritaire';
+  const isMaj = (group) => group.politicalPosition === 'Majoritaire';
   const majorityGroups = groups.filter((group) => isMaj(group));
   const oppositionGroups = groups.filter((group) => !isMaj(group));
   // Get the appropriate coordinates
@@ -18,14 +18,14 @@ export const getGroupsPositions = (groups) => {
     const x = Number(majorityCoords[index].x) * majorityGroupRadius;
     const y = Number(majorityCoords[index].y) * majorityGroupRadius;
     const z = Number(majorityCoords[index].z) * majorityGroupRadius;
-    positions[group.libelleAbrev] = [x, y, z];
+    positions[group.shortName] = [x, y, z];
   });
 
   oppositionGroups.forEach((group, index) => {
     const x = Number(oppositionCoords[index].x) * minorityGroupRadius;
     const y = Number(oppositionCoords[index].y) * minorityGroupRadius;
     const z = Number(oppositionCoords[index].z) * minorityGroupRadius;
-    positions[group.libelleAbrev] = [x, y, z];
+    positions[group.shortName] = [x, y, z];
   });
 
   return positions;

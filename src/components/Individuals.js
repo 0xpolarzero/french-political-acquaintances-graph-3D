@@ -17,7 +17,7 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
       group.data
         // Sort by loyalty (less loyal first)
         .sort((a, b) => {
-          return b.scoreMajorite - a.scoreMajorite;
+          return b.majorityScore - a.majorityScore;
         })
         .map((individual, index) => {
           return {

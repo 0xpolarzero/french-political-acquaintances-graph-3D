@@ -47,7 +47,7 @@ const Groups = () => {
               {/* <PresentationControls> */}
               <Entity
                 data={group}
-                position={entitiesPositions[group.libelleAbrev]}
+                position={entitiesPositions[group.shortName]}
                 onClick={controls.goToObject}
                 type='group'
                 onMouseEnter={(e) => setHovered(e, group, 'group')}
@@ -57,7 +57,7 @@ const Groups = () => {
             </Float>
             <Individuals
               group={group}
-              basePosition={entitiesPositions[group.libelleAbrev]}
+              basePosition={entitiesPositions[group.shortName]}
             />
           </animated.group>
         );

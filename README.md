@@ -4,12 +4,16 @@
 
 http://www.packomania.com/
 
-[ ] Fix color not adapting
-[ ] 🚩 Change hovered control with raycaster
-[ ] Keep group name in hint when clicked.current
 [ ] Display informations in modal on click on hint
 [ ] use scoreCohesion to break the sphere more or less (fragment)
 [ ] use scoreRose/women to display on the sphere
+[ ] make group spheres closer/further away from the center (majorityScore)
+
+Interface:
+
+- Show GroupDrawer or IndividualDrawer
+- In GroupDrawer, show stats + table with all individuals and their infos
+- Let search individual in there
 
 Statistiques:
 datan.fr

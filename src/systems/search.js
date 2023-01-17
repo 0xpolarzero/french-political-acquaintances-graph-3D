@@ -7,6 +7,11 @@ export const searchSystem = (data, onSearch, onClear) => {
         type: 'group',
         item: group,
       },
+      {
+        value: group.libelle,
+        type: 'group',
+        item: group,
+      },
       ...group.data.map((depute) => {
         return {
           value: `${depute.prenom} ${depute.nom}`,

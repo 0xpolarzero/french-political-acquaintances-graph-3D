@@ -70,24 +70,35 @@
   align-items: flex-end;
 }
 
-.hints > div > div {
+.hints > div > div,
+.search .more {
   display: flex;
   align-items: center;
   gap: 1rem;
-
-  transition: scale 0.3s ease;
 }
 
-.hints > div > div > svg {
+/* Transitions */
+
+.hints > div > div > svg,
+.search .more > svg {
   opacity: 0.7;
   transition: opacity 0.3s ease;
 }
 
-.hints > div > div:hover {
-  scale: 1.1;
+.hints > div > div span.content {
+  transition: transform 0.3s ease;
 }
 
-.hints > div > div:hover > svg {
+.hints > .left > div:hover span.content {
+  transform: translateX(1rem);
+}
+
+.hints > .right > div:hover span.content {
+  transform: translateX(-1rem);
+}
+
+.hints > div > div:hover > svg,
+.search .more:hover > svg {
   opacity: 1;
 }
 
@@ -99,9 +110,23 @@
   position: absolute;
   top: 0;
   right: 0;
-  /* width: 100%; */
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.search > div {
   padding: 1rem 2rem;
+}
+.search .more {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.search .more.hidden {
+  opacity: 0;
+  pointer-events: none;
 }

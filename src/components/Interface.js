@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { ImSphere, ImUser } from 'react-icons/im';
+import { BsArrowBarLeft } from 'react-icons/bs';
 import { Popover } from 'antd';
 import useData from '../stores/useData';
 import useInterface from '../stores/useInterface';
@@ -53,7 +54,9 @@ const Hints = () => {
         {/* Display deputee name */}
         <div className='individual'>
           <ImUser className={isInterfaceVisible ? '' : 'hidden'} />
-          {hovered && !!hovered.nom ? `${hovered.prenom} ${hovered.nom}` : '_'}
+          {hovered && hovered.type === 'individual'
+            ? `${hovered.item.prenom} ${hovered.item.nom}`
+            : '_'}
         </div>
         {/* Display group shortname */}
         <div className='group'>
@@ -63,8 +66,8 @@ const Hints = () => {
           />
           {/* Show complete name on hover */}
           <Popover content={group?.libelle} key={group?.id}>
-            {hovered && !!hovered.libelle
-              ? hovered.libelleAbrev
+            {hovered && hovered.type === 'group'
+              ? hovered.item.libelleAbrev
               : group
               ? group.libelleAbrev
               : '_'}
@@ -74,12 +77,22 @@ const Hints = () => {
 
       <div className='right'>
         {/* Show interface on click */}
+        <div className='action'>
+          {hovered.type === 'group' ? (
+            <>Afficher les informations du groupe</>
+          ) : hovered.type === 'individual' ? (
+            <>Afficher les informations du député</>
+          ) : (
+            <>_</>
+          )}
+          <GiClick className={isInterfaceVisible ? 'hidden' : ''} />
+        </div>
         <div className='click-interface'>
-          <GiClick
+          Menu / légende
+          <BsArrowBarLeft
             className={isInterfaceVisible ? 'hidden' : ''}
             onClick={() => setIsInterfaceVisible(true)}
           />
-          Afficher le menu/légende
         </div>
       </div>
     </div>

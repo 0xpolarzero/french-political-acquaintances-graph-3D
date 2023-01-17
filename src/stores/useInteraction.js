@@ -6,12 +6,12 @@ export default create((set, get) => ({
   setSearch: (search) => set({ search }),
   setSearching: (searching) => set({ searching }),
 
-  hovered: null,
-  setHovered: (hovered) => {
+  hovered: { item: null, type: null },
+  setHovered: (hovered, type) => {
     const { isCameraMoving, isCameraRotating } = get();
     if (isCameraMoving || isCameraRotating) return;
 
-    set({ hovered });
+    set({ hovered: { item: hovered, type: type } });
   },
 
   group: null,

@@ -5,12 +5,12 @@ import Entity from './Entity';
 import useData from '../stores/useData';
 import { getGroupsPositions } from '../systems/groups';
 import { Float, Html, PresentationControls } from '@react-three/drei';
-import useControls from '../hooks/useControls';
-import useInteract from '../stores/useInteract';
+import useControls from '../systems/hooks/useControls';
+import useInteraction from '../stores/useInteraction';
 
 const Groups = () => {
   const { organizedData: entities } = useData();
-  const { setGroup, setHovered } = useInteract();
+  const { setGroup, setHovered } = useInteraction();
   const [entitiesPositions, setEntitiesPositions] = useState({});
 
   const clicked = useRef();

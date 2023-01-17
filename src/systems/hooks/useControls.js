@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import useEnv from '../stores/useEnv';
+import useEnv from '../../stores/useEnv';
+import useInteraction from '../../stores/useInteraction';
 
 const OFFSET = 20;
 
 const useControls = (clicked) => {
   const { initialCameraPositionVector, cameraLookAt } = useEnv();
-  const [cameraTarget, setCameraTarget] = useState(initialCameraPositionVector);
-  const [isRotating, setIsRotating] = useState(false);
+  const { setIsCameraMoving, setIsCameraRotating } = useInteraction();
   const { camera } = useThree();
+
+  const [cameraTarget, setCameraTarget] = useState(initialCameraPositionVector);
+  const [isMoving, setIsMoving] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
 
   useFrame(() => {
     camera.position.lerp(cameraTarget, 0.02);
@@ -19,8 +23,29 @@ const useControls = (clicked) => {
     );
     camera.lookAt(cameraLookAt);
 
+    // Is the camera moving?
+    if (camera.position.distanceTo(cameraTarget) > 0.1) {
+      setIsMoving(true);
+    } else {
+      setIsMoving(false);
+    }
+    // Is the camera rotating?
     if (camera.position.distanceTo(cameraTarget) < 0.1) setIsRotating(false);
   });
+
+  // Needs to be in a useEffect or it makes the whole scene very laggy
+  useEffect(() => {
+    setIsCameraMoving(isMoving);
+  }, [isMoving, setIsCameraMoving]);
+
+  useEffect(() => {
+    setIsCameraRotating(isRotating);
+  }, [isRotating, setIsCameraRotating]);
+
+  useEffect(() => {
+    // When clicked.current changes, set isMoving to true
+    if (clicked.current) setIsCameraMoving(true);
+  }, [clicked.current, setIsMoving]);
 
   return {
     goToObject: (e) => {

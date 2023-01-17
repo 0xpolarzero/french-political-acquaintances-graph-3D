@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { Float } from '@react-three/drei';
 import Entity from './Entity';
 import { getIndividualsPositions } from '../systems/individuals';
-import useInteract from '../stores/useInteract';
+import useInteraction from '../stores/useInteraction';
 
 const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
-  const { hovered, setHovered } = useInteract();
+  const { hovered, setHovered } = useInteraction();
 
   // Get positions (sorted by their proximity to (0, 0, 0))
   const positions = useMemo(() => {

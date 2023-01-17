@@ -4,7 +4,7 @@ import { ImSphere, ImUser } from 'react-icons/im';
 import { Popover } from 'antd';
 import useData from '../stores/useData';
 import useInterface from '../stores/useInterface';
-import useInteract from '../stores/useInteract';
+import useInteraction from '../stores/useInteraction';
 
 const Interface = () => {
   return (
@@ -45,20 +45,23 @@ const Overlay = () => {
 
 const Hints = () => {
   const { isInterfaceVisible, setIsInterfaceVisible } = useInterface();
-  const { hovered, group } = useInteract();
+  const { hovered, group } = useInteraction();
 
   return (
     <div className='interface hints'>
       <div className='left'>
+        {/* Display deputee name */}
         <div className='individual'>
           <ImUser className={isInterfaceVisible ? '' : 'hidden'} />
           {hovered && !!hovered.nom ? `${hovered.prenom} ${hovered.nom}` : '_'}
         </div>
+        {/* Display group shortname */}
         <div className='group'>
           <GiHolosphere
             className={isInterfaceVisible ? '' : 'hidden'}
             onClick={() => setIsInterfaceVisible(false)}
           />
+          {/* Show complete name on hover */}
           <Popover content={group?.libelle} key={group?.id}>
             {hovered && !!hovered.libelle
               ? hovered.libelleAbrev
@@ -70,11 +73,14 @@ const Hints = () => {
       </div>
 
       <div className='right'>
-        <GiClick
-          className={isInterfaceVisible ? 'hidden' : ''}
-          onClick={() => setIsInterfaceVisible(true)}
-        />
-        Afficher le menu/légende
+        {/* Show interface on click */}
+        <div className='click-interface'>
+          <GiClick
+            className={isInterfaceVisible ? 'hidden' : ''}
+            onClick={() => setIsInterfaceVisible(true)}
+          />
+          Afficher le menu/légende
+        </div>
       </div>
     </div>
   );

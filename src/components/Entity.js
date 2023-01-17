@@ -15,7 +15,6 @@ const Entity = ({
 
   const color =
     type === 'individual' ? getIndividualColor(data) : data.couleurAssociee;
-
   const scale =
     type === 'individual'
       ? // Scale the score participation that is between 0 and 1 into 0.3 and 1.5
@@ -31,7 +30,7 @@ const Entity = ({
 
   const logIndividual = (e) => {
     e.stopPropagation();
-    console.log(e.object.userData.scoreParticipation);
+    console.log(e.object.userData.scoreLoyaute);
     console.log(e.object.userData);
   };
 
@@ -46,11 +45,11 @@ const Entity = ({
     >
       <sphereGeometry args={[1, 32, 32]} />
       {highQuality ? (
-        // <meshStandardMaterial color={color || baseColor} />
-        <meshPhysicalMaterial
-          color={color || data.color}
-          wireframe={type === 'group'}
-        />
+        // <meshPhysicalMaterial
+        //   color={color || data.color}
+        //   wireframe={type === 'group'}
+        // />
+        <meshStandardMaterial color={color} wireframe={type === 'group'} />
       ) : (
         <meshBasicMaterial
           color={color || data.color}

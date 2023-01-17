@@ -5,6 +5,7 @@
 http://www.packomania.com/
 
 [ ] Fix color not adapting
+[ ] 🚩 Change hovered control with raycaster
 [ ] Keep group name in hint when clicked.current
 [ ] Display informations in modal on click on hint
 [ ] use scoreCohesion to break the sphere more or less (fragment)

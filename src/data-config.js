@@ -6,6 +6,9 @@
  */
 
 // See stores/useData.js to see how the data is fetched and organized.
+// See systems/data/coordinates.json to see how the spheres are distributed.
+// ! It currently supports only up to 200 spheres distributed around each sphere.
+// -> to implement more, see http://www.packomania.com/ or contact me.
 
 // URLs for fetching data
 export const dataUrls = {

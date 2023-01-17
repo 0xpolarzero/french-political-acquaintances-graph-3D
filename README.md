@@ -19,7 +19,6 @@ See more information about them, or just navigate with a better view
 
 http://www.packomania.com/
 
-[ ] make group spheres closer/further away from the center (majorityScore)
 [ ] Display informations in modal on click on hint
 [ ] use scoreCohesion to break the sphere more or less (fragment)
 [ ] use scoreRose/women to display on the sphere

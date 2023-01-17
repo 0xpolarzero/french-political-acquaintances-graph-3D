@@ -43,8 +43,8 @@ const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
               position={positions[index]}
               onClick={null}
               type='individual'
-              onMouseEnter={() => setHovered(individual, 'individual')}
-              onMouseLeave={() => setHovered(null)}
+              onMouseEnter={(e) => setHovered(e, individual, 'individual')}
+              onMouseLeave={(e) => setHovered(e, null, null)}
             />
           </Float>
         );

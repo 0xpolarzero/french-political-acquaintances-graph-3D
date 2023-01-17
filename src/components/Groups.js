@@ -50,8 +50,8 @@ const Groups = () => {
                 position={entitiesPositions[group.libelleAbrev]}
                 onClick={controls.goToObject}
                 type='group'
-                onMouseEnter={() => setHovered(group, 'group')}
-                onMouseLeave={() => setHovered(null)}
+                onMouseEnter={(e) => setHovered(e, group, 'group')}
+                onMouseLeave={(e) => setHovered(e, null, null)}
               />
               {/* </PresentationControls> */}
             </Float>

@@ -12,14 +12,19 @@ export default create((set, get) => ({
   data: { deputees: [], groups: [] },
   organizedData: [],
   loaded: false,
+  error: false,
 
   // Set all the data
   setData: async () => {
     const { setDataDeputees, setDataGroups, organizeData } = get();
-    await setDataGroups();
-    await setDataDeputees();
-    organizeData();
-    set({ loaded: true });
+    try {
+      await setDataGroups();
+      await setDataDeputees();
+      organizeData();
+      set({ loaded: true });
+    } catch (err) {
+      set({ error: true });
+    }
   },
 
   // Global data

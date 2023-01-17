@@ -90,3 +90,18 @@
 .hints > div > div:hover > svg {
   opacity: 1;
 }
+
+/**
+  * Search
+  */
+
+.search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+}

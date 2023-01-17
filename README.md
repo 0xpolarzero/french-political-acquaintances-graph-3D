@@ -1,13 +1,28 @@
-- Position related to loyalty and proximity to the majority
+Groups:
+
+- Size related to the power (number of members \* their participation)
+- Proximity to the center related to their votes similarity with the majority
+
+Deputees:
+
+- Position related to their proximity to the majority (the closer to the center, the more similar to the majority)
 - Size related to participation => power in decision making
-- Base color for groups and ligher as the individual's loyalty decreases
+- Color related to their votes (the lighter, the more opposed to their group)
+
+Click on a group to see it closer, and navigate with left/right arrows to turn around
+Click again to see more information
+
+Click on a deputee to see more information
+
+Search for a group or a deputee to see it/them clearly in the scene
+See more information about them, or just navigate with a better view
 
 http://www.packomania.com/
 
+[ ] make group spheres closer/further away from the center (majorityScore)
 [ ] Display informations in modal on click on hint
 [ ] use scoreCohesion to break the sphere more or less (fragment)
 [ ] use scoreRose/women to display on the sphere
-[ ] make group spheres closer/further away from the center (majorityScore)
 
 Interface:
 

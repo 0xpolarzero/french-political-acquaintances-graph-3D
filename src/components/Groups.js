@@ -18,6 +18,9 @@ const Groups = () => {
 
   useEffect(() => {
     setEntitiesPositions(getGroupsPositions(entities));
+    entities.map((entity) => {
+      console.log(entity.majorityScore);
+    });
   }, [entities]);
 
   useEffect(() => {

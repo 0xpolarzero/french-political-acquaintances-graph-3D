@@ -22,9 +22,20 @@ export const getGroupsPositions = (groups) => {
   });
 
   oppositionGroups.forEach((group, index) => {
-    const x = Number(oppositionCoords[index].x) * minorityGroupRadius;
-    const y = Number(oppositionCoords[index].y) * minorityGroupRadius;
-    const z = Number(oppositionCoords[index].z) * minorityGroupRadius;
+    const attraction = group.majorityScore * 0.4;
+
+    const x =
+      Number(oppositionCoords[index].x) *
+      minorityGroupRadius *
+      (1 - attraction);
+    const y =
+      Number(oppositionCoords[index].y) *
+      minorityGroupRadius *
+      (1 - attraction);
+    const z =
+      Number(oppositionCoords[index].z) *
+      minorityGroupRadius *
+      (1 - attraction);
     positions[group.shortName] = [x, y, z];
   });
 

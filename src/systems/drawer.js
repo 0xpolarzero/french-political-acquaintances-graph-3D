@@ -46,29 +46,7 @@ const formatContact = {
   },
 };
 
-const formatStats = (individualStats, groupStats) => {
-  const max = 100;
-
-  const data = Object.keys(individualStats).map((key) => {
-    const type = individualStats[key].type;
-    const individualValue =
-      /* isNaN(individualStats[key].value)
-      ? 0
-      :  */ individualStats[key].value;
-    const groupValue = groupStats[key];
-
-    return {
-      type,
-      A: individualValue * 100,
-      B: groupValue * 100,
-      fullMark: max,
-    };
-  });
-
-  return data;
-};
-
-export const organizeDrawerData = (data, groupsData) => {
+export const organizeDrawerData = (data) => {
   const generalData = {
     // gender: { type: 'Genre', value: data.gender },
     firstName: { type: 'Prénom', value: data.firstName },
@@ -129,26 +107,57 @@ export const organizeDrawerData = (data, groupsData) => {
       value: data.participationScore,
     },
     specParticipation: {
-      type: 'Participation aux séances liées à la spécialité',
+      type: 'Participation (spécialité)',
       value: data.specParticipationScore,
     },
     majority: { type: 'Majorité', value: data.majorityScore },
   };
 
-  const statsFormatted = formatStats(statsData, groupsData);
-
   return {
     generalData,
     politicalData,
     contactData,
-    statsData: statsFormatted,
+    statsData,
   };
 };
 
-export const getOppositeColor = (color) => {
-  const colorHex = color.replace('#', '');
-  const colorHexOpposite = (0xffffff ^ parseInt(colorHex, 16)).toString(16);
-  const colorOpposite = `#${colorHexOpposite}`;
+export const formatStatsForChart = {
+  radar: (individualData, groupData) => {
+    const max = 100;
 
-  return colorOpposite;
+    const formatted = Object.keys(individualData).map((key) => {
+      const type = individualData[key].type;
+      const individualValue =
+        /* isNaN(individualStats[key].value)
+        ? 0
+        :  */ individualData[key].value;
+      const groupValue = groupData[key];
+
+      return {
+        type,
+        A: individualValue * 100,
+        B: groupValue * 100,
+        fullMark: max,
+      };
+    });
+
+    return formatted;
+  },
+
+  bar: (individualData, groupData, individualLabel, groupLabel) => {
+    const formatted = Object.keys(individualData).map((key) => {
+      const type = individualData[key].type;
+      const individualValue = individualData[key].value;
+      const groupValue = groupData[key];
+
+      return {
+        name: type,
+        A: individualValue * 100,
+        B: groupValue * 100,
+        amt: 100,
+      };
+    });
+
+    return formatted;
+  },
 };

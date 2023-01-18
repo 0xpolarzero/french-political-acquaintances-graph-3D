@@ -16,11 +16,19 @@
 .interface.hidden {
   opacity: 0;
   pointer-events: none;
+  z-index: -9999;
+}
+
+.interface .title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
 }
 
 /**
-  * Overlay
-  */
+* Overlay
+*/
 
 .overlay {
   position: absolute;
@@ -34,23 +42,90 @@
   transition: opacity 0.3s ease;
 
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  justify-items: center;
+  grid-template-rows: 1fr auto;
 }
 
 .overlay.visible {
   opacity: 1;
   pointer-events: all;
+}
+
+.ant-collapse {
+  overflow-y: scroll;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.overlay .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  opacity: 0.7;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.overlay .close:hover {
+  opacity: 1;
 }
 
 .overlay > div {
   padding: 1rem;
 }
 
-.overlay .right {
-  text-align: right;
-  line-height: 1.5;
+.overlay .panel-header {
+  font-family: 'Futura PT', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ant-collapse-header {
+  align-items: center !important;
+}
+
+/* Credits */
+.credits {
+  justify-self: center;
+  text-align: center;
+}
+
+/* Informations */
+.interface.informations,
+.interface.instructions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  line-height: 1.5rem;
+}
+
+/* Instructions */
+.interface.instructions .title {
+  grid-column: span 2;
+}
+
+.interface.instructions .title:not(span:nth-child(1)) {
+  margin-top: 1rem;
+}
+
+/* Caption */
+.caption-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  line-height: 1.7;
+  cursor: pointer;
+}
+
+.caption-group > span {
+  display: flex;
+  align-items: center;
 }
 
 /**

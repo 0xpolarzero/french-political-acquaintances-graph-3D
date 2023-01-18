@@ -39,3 +39,27 @@ canvas {
   font-size: 2rem;
   font-weight: 700;
 }
+
+a {
+  color: #ff6666;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff9999;
+  text-decoration: underline;
+}
+
+p {
+  line-height: 1.4;
+  margin: 0;
+}
+
+.warning {
+  color: #ff9f1c;
+}
+
+.info {
+  color: #ff6666;
+  cursor: pointer;
+}

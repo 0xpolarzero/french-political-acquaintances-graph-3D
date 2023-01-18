@@ -43,6 +43,7 @@ canvas {
 a {
   color: #ff6666;
   text-decoration: none;
+  transition: none;
 }
 
 a:hover {
@@ -53,6 +54,31 @@ a:hover {
 p {
   line-height: 1.4;
   margin: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li::before {
+  content: '→';
+  color: #ff6666;
+  display: inline-block;
+  width: 1em;
+  /* margin-left: -1em; */
+  margin-right: 0.5rem;
+}
+
+blockquote {
+  margin: 0;
+  padding: 0;
+  border-left: 0.1rem solid #ff6666;
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  padding-left: 1rem;
 }
 
 .warning {

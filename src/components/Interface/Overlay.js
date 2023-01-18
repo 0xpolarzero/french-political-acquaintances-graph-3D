@@ -64,6 +64,13 @@ const Overlay = () => {
         >
           <Instructions />
         </Panel>
+        <Panel
+          header={<span className='panel-header'>Sources</span>}
+          key='4'
+          style={panelStyle}
+        >
+          <Sources />
+        </Panel>
       </Collapse>
 
       <Credits />
@@ -227,6 +234,84 @@ const Credits = () => {
         ).
       </p>
       <p>Les données sont mises à jour quotidiennement.</p>
+    </div>
+  );
+};
+
+const Sources = () => {
+  return (
+    <div className='interface section sources'>
+      <p>
+        Toutes les informations sont issues des{' '}
+        <a
+          href='https://www.data.gouv.fr/fr/organizations/datan/'
+          target='_blank'
+          rel='noreferrer'
+        >
+          jeux de données de Datan
+        </a>{' '}
+        disponibles sur{' '}
+        <a
+          href='https://www.data.gouv.fr/fr/datasets/'
+          target='_blank'
+          rel='noreferrer'
+        >
+          la plateforme des données publiques françaises
+        </a>
+        . En particulier:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <a
+              href='https://www.data.gouv.fr/fr/datasets/deputes-actifs-de-lassemblee-nationale-informations-et-statistiques/'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Députés actifs de l'Assemblée nationale
+            </a>
+          </li>
+          <li>
+            <a
+              href='https://www.data.gouv.fr/fr/datasets/groupes-politiques-actifs-de-lassemblee-nationale-informations-et-statistiques/'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Groupes politiques actifs de l'Assemblée nationale
+            </a>
+          </li>
+        </ul>
+      </p>
+      <br />
+      <p>
+        La plateforme{' '}
+        <a href='https://datan.fr/' target='_blank' rel='noreferrer'>
+          Datan
+        </a>{' '}
+        met à disposition des données sur l'activité parlementaire des députés
+        français, et{' '}
+        <a
+          href='https://datan.fr/statistiques'
+          target='_blank'
+          rel='noreferrer'
+        >
+          un certain nombre de statistiques supplémentaires
+        </a>
+        . Ces données sont mises à jour quotidiennement.
+      </p>
+      <br />
+      <p>
+        <blockquote cite='https://datan.fr/a-propos'>
+          Datan est un outil indépendant visant à mieux rendre compte de
+          l’activité parlementaire des députés. Pour ce faire, l’accent est mis
+          sur les pratiques de vote, permettant ainsi aux citoyens de comprendre
+          le positionnement réel de leurs parlementaires.{' '}
+          <a href='https://datan.fr/a-propos' target='_blank' rel='noreferrer'>
+            (Référence)
+          </a>
+        </blockquote>
+      </p>
     </div>
   );
 };

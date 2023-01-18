@@ -19,10 +19,6 @@ const Overlay = () => {
   const { organizedData: data } = useData();
   const { isOverlayVisible, setIsOverlayVisible } = useInterface();
 
-  const panelStyle = {
-    // textAlign: 'center',
-  };
-
   const closeInterface = (e) => {
     if (e.key === 'Escape') setIsOverlayVisible(false);
   };
@@ -46,29 +42,19 @@ const Overlay = () => {
         <Panel
           header={<span className='panel-header'>Informations</span>}
           key='1'
-          style={panelStyle}
         >
           <Informations />
         </Panel>
-        <Panel
-          header={<span className='panel-header'>Légende</span>}
-          key='2'
-          style={panelStyle}
-        >
+        <Panel header={<span className='panel-header'>Légende</span>} key='2'>
           <Caption data={data} />
         </Panel>
         <Panel
           header={<span className='panel-header'>Utilisation</span>}
           key='3'
-          style={panelStyle}
         >
           <Instructions />
         </Panel>
-        <Panel
-          header={<span className='panel-header'>Sources</span>}
-          key='4'
-          style={panelStyle}
-        >
+        <Panel header={<span className='panel-header'>Sources</span>} key='4'>
           <Sources />
         </Panel>
       </Collapse>

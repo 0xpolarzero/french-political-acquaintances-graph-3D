@@ -57,7 +57,7 @@ export const dataConfig = {
       scoreMajorite: 'majorityScore',
       scoreParticipation: 'participationScore',
       // Participation in votes related to their specialities
-      scoreParticipationSpecialites: 'specParticipationScore',
+      scoreParticipationSpecialite: 'specParticipationScore',
       twitter: 'twitter',
       website: 'website',
 

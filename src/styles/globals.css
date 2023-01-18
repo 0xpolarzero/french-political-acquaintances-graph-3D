@@ -56,21 +56,6 @@ p {
   margin: 0;
 }
 
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-li::before {
-  content: '→';
-  color: #ff6666;
-  display: inline-block;
-  width: 1em;
-  /* margin-left: -1em; */
-  margin-right: 0.5rem;
-}
-
 blockquote {
   margin: 0;
   padding: 0;

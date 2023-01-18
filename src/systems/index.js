@@ -5,6 +5,7 @@ import {
   getIndividualColor,
 } from './individuals';
 import { searchSystem } from './search';
+import { organizeDrawerData } from './drawer';
 
 export {
   getGroupsPositions,
@@ -12,4 +13,5 @@ export {
   attractIndividual,
   getIndividualColor,
   searchSystem,
+  organizeDrawerData,
 };

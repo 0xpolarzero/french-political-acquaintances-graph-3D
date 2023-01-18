@@ -1,20 +1,6 @@
 import { Collapse, Drawer, Table, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  Radar,
-  RadarChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import * as CHARTS from 'recharts';
 import useData from '../../../../stores/useData';
 import useInterface from '../../../../stores/useInterface';
 import { formatStatsForChart, organizeDrawerData } from '../../../../systems';
@@ -215,28 +201,28 @@ const ChartRadar = ({
   return (
     <>
       <ErrorComponent data={individualData} />
-      <ResponsiveContainer width='100%' height={400}>
-        <RadarChart cx='50%' cy='50%' outerRadius='80%' data={data}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey='type' />
-          <PolarRadiusAxis angle={45} domain={[0, 100]} />
-          <Radar
+      <CHARTS.ResponsiveContainer width='100%' height={400}>
+        <CHARTS.RadarChart cx='50%' cy='50%' outerRadius='80%' data={data}>
+          <CHARTS.PolarGrid />
+          <CHARTS.PolarAngleAxis dataKey='type' />
+          <CHARTS.PolarRadiusAxis angle={45} domain={[0, 100]} />
+          <CHARTS.Radar
             name={individualLabel}
             dataKey='A'
             stroke='#8884d8'
             color='#8884d8'
             fillOpacity={0.7}
           />
-          <Radar
+          <CHARTS.Radar
             name={groupLabel}
             dataKey='B'
             stroke='#82ca9d'
             color='#82ca9d'
             fillOpacity={0.5}
           />
-          <Legend />
-        </RadarChart>
-      </ResponsiveContainer>
+          <CHARTS.Legend />
+        </CHARTS.RadarChart>
+      </CHARTS.ResponsiveContainer>
     </>
   );
 };
@@ -257,8 +243,8 @@ const ChartBar = ({
   return (
     <>
       <ErrorComponent data={individualData} />
-      <ResponsiveContainer width='100%' height='100%'>
-        <BarChart
+      <CHARTS.ResponsiveContainer width='100%' height='100%'>
+        <CHARTS.BarChart
           width={500}
           height={300}
           data={data}
@@ -269,15 +255,15 @@ const ChartBar = ({
             bottom: 5,
           }}
         >
-          <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='name' />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey='A' name={individualLabel} fill='#8884d8' />
-          <Bar dataKey='B' name={groupLabel} fill='#82ca9d' />
-        </BarChart>
-      </ResponsiveContainer>
+          <CHARTS.CartesianGrid strokeDasharray='3 3' />
+          <CHARTS.XAxis dataKey='name' />
+          <CHARTS.YAxis />
+          <CHARTS.Tooltip />
+          <CHARTS.Legend />
+          <CHARTS.Bar dataKey='A' name={individualLabel} fill='#8884d8' />
+          <CHARTS.Bar dataKey='B' name={groupLabel} fill='#82ca9d' />
+        </CHARTS.BarChart>
+      </CHARTS.ResponsiveContainer>
     </>
   );
 };

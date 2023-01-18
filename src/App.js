@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ConfigProvider, theme } from 'antd';
-import Graph from './components/Graph';
-import useData from './stores/useData';
-import useEnv from './stores/useEnv';
-import Interface from './components/Interface';
+import Graph from 'src/components/Graph';
+import Interface from 'src/components/Interface';
+import { useData, useEnv } from 'src/stores';
 
 const App = () => {
   const { setData, loaded, error } = useData();

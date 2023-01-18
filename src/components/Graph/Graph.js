@@ -1,11 +1,9 @@
 import { Environment } from '@react-three/drei';
 import Groups from './components';
-import useGraphics from '../../stores/useGraphics';
-import useInteraction from '../../stores/useInteraction';
+import { useGraphics } from 'src/stores';
 
 const Graph = () => {
   const { highQuality } = useGraphics();
-  const { hovered } = useInteraction();
 
   return (
     <>

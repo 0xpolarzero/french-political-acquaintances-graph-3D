@@ -1,5 +1,5 @@
 import { Drawer } from 'antd';
-import useInterface from '../../../../stores/useInterface';
+import { useInterface } from 'src/stores';
 
 const GroupDrawer = () => {
   const { drawer, closeDrawer } = useInterface();

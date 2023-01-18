@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { Collapse, Tooltip } from 'antd';
-import { useEffect, useState } from 'react';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { BsArrowBarRight } from 'react-icons/bs';
-import { ImCancelCircle, ImSearch, ImUser, ImWarning } from 'react-icons/im';
+import { ImCancelCircle, ImSearch, ImWarning } from 'react-icons/im';
 import {
   TbArrowLeft,
   TbArrowRight,
@@ -10,8 +10,7 @@ import {
   TbQuestionMark,
   TbSelect,
 } from 'react-icons/tb';
-import useData from '../../../stores/useData';
-import useInterface from '../../../stores/useInterface';
+import { useData, useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 

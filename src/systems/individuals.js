@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import Gradient from 'javascript-color-gradient';
-import COORDINATES from './data/coordinates.json';
+import COORDINATES from 'src/systems/data/coordinates.json';
 
 export const getIndividualsPositions = (group, basePos) => {
   const amount = group.data.length;

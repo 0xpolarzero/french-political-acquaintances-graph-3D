@@ -1,12 +1,10 @@
+import { useEffect, useState } from 'react';
 import { AutoComplete } from 'antd';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 import { ImUser } from 'react-icons/im';
-import useData from '../../../stores/useData';
-import useInterface from '../../../stores/useInterface';
-import useInteraction from '../../../stores/useInteraction';
-import { searchSystem } from '../../../systems';
-import { useEffect, useState } from 'react';
+import { useData, useInteraction, useInterface } from 'src/stores';
+import { searchSystem } from 'src/systems';
 
 const Hints = () => {
   const { organizedData: data } = useData();

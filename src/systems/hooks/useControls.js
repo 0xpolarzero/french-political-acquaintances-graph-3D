@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import useEnv from '../../stores/useEnv';
-import useInteraction from '../../stores/useInteraction';
+import { useEnv, useInteraction } from 'src/stores';
 
 const OFFSET = 20;
 

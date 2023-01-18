@@ -1,4 +1,4 @@
-import coordinates from './data/coordinates.json';
+import coordinates from 'src/systems/data/coordinates.json';
 
 export const getGroupsPositions = (groups) => {
   let positions = {};

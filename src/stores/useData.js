@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { parse } from 'papaparse';
-import { dataUrls, dataConfig } from '../data-config';
-import { getAverage, getGroupPower } from '../systems';
+import { dataUrls, dataConfig } from 'src/data-config';
+import { getAverage, getGroupPower } from 'src/systems';
 
 const { deputees: DATA_DEPUTEES_URL, groups: DATA_GROUPS_URL } = dataUrls;
 const mappingIndividuals = dataConfig.categories.individuals;

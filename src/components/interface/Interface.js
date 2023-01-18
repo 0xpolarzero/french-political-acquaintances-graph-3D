@@ -6,7 +6,7 @@ import { AutoComplete, Popover } from 'antd';
 import useData from '../../stores/useData';
 import useInterface from '../../stores/useInterface';
 import useInteraction from '../../stores/useInteraction';
-import { searchSystem } from '../../systems/search';
+import { searchSystem } from '../../systems';
 
 const Interface = () => {
   return (
@@ -119,9 +119,12 @@ const Hints = () => {
             )}
             <GiClick className={isInterfaceVisible ? 'hidden' : ''} />
           </div>
-          <div className='click-interface'>
+          <div
+            className='click-interface'
+            onClick={() => setIsInterfaceVisible(true)}
+          >
             <span className='content'>Menu / légende</span>
-            <BsArrowBarLeft onClick={() => setIsInterfaceVisible(true)} />
+            <BsArrowBarLeft />
           </div>
         </div>
       </div>

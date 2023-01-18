@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
 export default create((set) => ({
-  isInterfaceVisible: false,
+  isInterfaceVisible: true,
   setIsInterfaceVisible: (value) => set(() => ({ isInterfaceVisible: value })),
 }));

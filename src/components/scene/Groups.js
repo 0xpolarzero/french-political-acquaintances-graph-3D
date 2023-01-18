@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from '@react-spring/three';
 import Individuals from './Individuals';
 import Entity from './Entity';
-import useData from '../stores/useData';
-import { getGroupsPositions } from '../systems/groups';
+import useData from '../../stores/useData';
+import { getGroupsPositions } from '../../systems/groups';
 import { Float, Html, PresentationControls } from '@react-three/drei';
-import useControls from '../systems/hooks/useControls';
-import useInteraction from '../stores/useInteraction';
+import useControls from '../../systems/hooks/useControls';
+import useInteraction from '../../stores/useInteraction';
 
 const Groups = () => {
   const { organizedData: entities } = useData();

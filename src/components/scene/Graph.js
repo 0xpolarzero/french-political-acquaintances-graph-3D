@@ -1,7 +1,7 @@
 import { Environment } from '@react-three/drei';
 import Groups from './Groups';
-import useGraphics from '../stores/useGraphics';
-import useInteraction from '../stores/useInteraction';
+import useGraphics from '../../stores/useGraphics';
+import useInteraction from '../../stores/useInteraction';
 import { useEffect } from 'react';
 
 const Graph = () => {

@@ -3,10 +3,10 @@ import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { ImSphere, ImUser } from 'react-icons/im';
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 import { AutoComplete, Popover } from 'antd';
-import useData from '../stores/useData';
-import useInterface from '../stores/useInterface';
-import useInteraction from '../stores/useInteraction';
-import { searchSystem } from '../systems/search';
+import useData from '../../stores/useData';
+import useInterface from '../../stores/useInterface';
+import useInteraction from '../../stores/useInteraction';
+import { searchSystem } from '../../systems/search';
 
 const Interface = () => {
   return (

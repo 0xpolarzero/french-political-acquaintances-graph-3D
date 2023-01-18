@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Float } from '@react-three/drei';
 import Entity from './Entity';
-import { getIndividualsPositions } from '../systems/individuals';
-import useInteraction from '../stores/useInteraction';
+import { getIndividualsPositions } from '../../systems/individuals';
+import useInteraction from '../../stores/useInteraction';
 
 const Individuals = ({ group, basePosition = [0, 0, 0] }) => {
   const { hovered, setHovered } = useInteraction();

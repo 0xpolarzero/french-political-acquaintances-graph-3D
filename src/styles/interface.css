@@ -40,6 +40,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  z-index: -9999;
 
   display: grid;
   grid-template-rows: 1fr auto;
@@ -48,6 +49,7 @@
 .overlay.visible {
   opacity: 1;
   pointer-events: all;
+  z-index: 9999;
 }
 
 .ant-collapse {
@@ -171,11 +173,13 @@
   transition: opacity 0.3s ease;
 }
 
-.hints > div > div span.content {
+.hints > div > div span.content,
+.search .more span.content {
   transition: transform 0.3s ease;
 }
 
-.hints > .left > div:hover span.content {
+.hints > .left > div:hover span.content,
+.search > .more:hover span.content {
   transform: translateX(1rem);
 }
 

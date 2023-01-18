@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { attractIndividual, getIndividualColor } from '../../systems';
 import useGraphics from '../../stores/useGraphics';
 import useInteraction from '../../stores/useInteraction';
+import useInterface from '../../stores/useInterface';
 
 const Entity = ({
   data,
@@ -14,6 +15,7 @@ const Entity = ({
 }) => {
   const { highQuality } = useGraphics();
   const { hovered, search } = useInteraction();
+  const { setDrawer } = useInterface();
 
   const color = search
     ? search.item.id === data.id
@@ -52,18 +54,12 @@ const Entity = ({
     config: { mass: 1, tension: 200, friction: 20 },
   });
 
-  const logIndividual = (e) => {
-    e.stopPropagation();
-    console.log(e.object.userData.loyaltyScore);
-    console.log(e.object.userData);
-  };
-
   return (
     <animated.mesh
       position={pos}
       userData={data}
       scale={scaleSpring}
-      onClick={onClick ? onClick : logIndividual}
+      onClick={onClick ? onClick : (e) => setDrawer(e, data, type)}
       onPointerEnter={onMouseEnter}
       onPointerLeave={onMouseLeave}
     >

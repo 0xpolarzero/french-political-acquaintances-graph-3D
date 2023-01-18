@@ -6,10 +6,12 @@ import useData from '../../stores/useData';
 import useInterface from '../../stores/useInterface';
 import useInteraction from '../../stores/useInteraction';
 import { searchSystem } from '../../systems';
+import { useEffect, useState } from 'react';
 
 const Hints = () => {
   const { organizedData: data } = useData();
-  const { isOverlayVisible, setIsOverlayVisible } = useInterface();
+  const { isOverlayVisible, setIsOverlayVisible, drawer, setDrawer } =
+    useInterface();
   const {
     hovered,
     group,
@@ -17,27 +19,31 @@ const Hints = () => {
     onClear,
     search: searchValue,
   } = useInteraction();
+  const [isHidden, setIsHidden] = useState(false);
 
   const search = searchSystem(data, onSearch, onClear);
+
+  useEffect(() => {
+    setIsHidden(isOverlayVisible || drawer.isOpen);
+  }, [isOverlayVisible, drawer.isOpen]);
 
   return (
     <>
       <div
-        className={
-          isOverlayVisible ? 'interface search hidden' : 'interface search'
-        }
+        className={isHidden ? 'interface search hidden' : 'interface search'}
       >
-        <div className={searchValue ? 'more' : 'more hidden'}>
+        <div
+          className={searchValue ? 'more' : 'more hidden'}
+          onClick={() => setDrawer(null, searchValue.item, searchValue.type)}
+        >
           <BsArrowBarRight />
-          Afficher les détails de {searchValue ? searchValue.value : ''}
+          <span className='content'>
+            Afficher les détails de {searchValue ? searchValue.value : ''}
+          </span>
         </div>
         <AutoComplete {...search} />
       </div>
-      <div
-        className={
-          isOverlayVisible ? 'interface hints hidden' : 'interface hints'
-        }
-      >
+      <div className={isHidden ? 'interface hints hidden' : 'interface hints'}>
         <div className='left'>
           {/* Display deputee name */}
           <div className='individual'>

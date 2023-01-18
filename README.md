@@ -36,3 +36,8 @@ Use this as well:
 https://www.data.gouv.fr/fr/datasets/groupes-politiques-actifs-de-lassemblee-nationale-informations-et-statistiques/
 -> get name+symbol
 -> get color
+
+Stats
+
+Compare all groups (members, majority proximity, inclusiveness...)
+https://recharts.org/en-US/examples/SimpleRadarChart

@@ -7,14 +7,24 @@ import { getGroupsPositions } from '../../systems/groups';
 import { Float, Html, PresentationControls } from '@react-three/drei';
 import useControls from '../../systems/hooks/useControls';
 import useInteraction from '../../stores/useInteraction';
+import useInterface from '../../stores/useInterface';
 
 const Groups = () => {
   const { organizedData: entities } = useData();
   const { setGroup, setHovered } = useInteraction();
+  const { setDrawer } = useInterface();
   const [entitiesPositions, setEntitiesPositions] = useState({});
 
   const clicked = useRef();
   const controls = useControls(clicked);
+
+  const onClick = (e) => {
+    if (e.object.userData.id === clicked.current?.userData.id) {
+      setDrawer(e, clicked.current.userData, 'group');
+    } else {
+      controls.goToObject(e);
+    }
+  };
 
   useEffect(() => {
     setEntitiesPositions(getGroupsPositions(entities));
@@ -51,7 +61,7 @@ const Groups = () => {
               <Entity
                 data={group}
                 position={entitiesPositions[group.shortName]}
-                onClick={controls.goToObject}
+                onClick={onClick}
                 type='group'
                 onMouseEnter={(e) => setHovered(e, group, 'group')}
                 onMouseLeave={(e) => setHovered(e, null, null)}

@@ -4,7 +4,6 @@ export default create((set, get) => ({
   // Search
   search: null,
   onSearch: (value, data) => {
-    console.log(data);
     set({ search: data });
   },
   onClear: () => set({ search: null }),

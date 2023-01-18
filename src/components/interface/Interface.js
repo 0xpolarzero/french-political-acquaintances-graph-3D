@@ -19,10 +19,13 @@ const Interface = () => {
 
 const Overlay = () => {
   const { organizedData: data } = useData();
-  const { isInterfaceVisible } = useInterface();
+  const { isOverlayVisible, setIsOverlayVisible } = useInterface();
 
   return (
-    <div className={isInterfaceVisible ? 'overlay visible' : 'overlay'}>
+    <div
+      className={isOverlayVisible ? 'overlay visible' : 'overlay'}
+      onClick={() => setIsOverlayVisible(false)}
+    >
       <div className='interface left'>aa</div>
       <div className='interface center'>bb</div>
       <div className='interface right'>
@@ -47,7 +50,7 @@ const Overlay = () => {
 
 const Hints = () => {
   const { organizedData: data } = useData();
-  const { isInterfaceVisible, setIsInterfaceVisible } = useInterface();
+  const { isOverlayVisible, setIsOverlayVisible } = useInterface();
   const {
     hovered,
     group,
@@ -60,14 +63,22 @@ const Hints = () => {
 
   return (
     <>
-      <div className='interface search'>
+      <div
+        className={
+          isOverlayVisible ? 'interface search hidden' : 'interface search'
+        }
+      >
         <div className={searchValue ? 'more' : 'more hidden'}>
           <BsArrowBarRight />
           Afficher les informations sur {searchValue ? searchValue.value : ''}
         </div>
         <AutoComplete {...search} />
       </div>
-      <div className='interface hints'>
+      <div
+        className={
+          isOverlayVisible ? 'interface hints hidden' : 'interface hints'
+        }
+      >
         <div className='left'>
           {/* Display deputee name */}
           <div className='individual'>
@@ -117,11 +128,11 @@ const Hints = () => {
             ) : (
               <span className='content'>_</span>
             )}
-            <GiClick className={isInterfaceVisible ? 'hidden' : ''} />
+            <GiClick className={isOverlayVisible ? 'hidden' : ''} />
           </div>
           <div
             className='click-interface'
-            onClick={() => setIsInterfaceVisible(true)}
+            onClick={() => setIsOverlayVisible(true)}
           >
             <span className='content'>Menu / légende</span>
             <BsArrowBarLeft />

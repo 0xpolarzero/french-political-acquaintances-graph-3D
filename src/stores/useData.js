@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { parse } from 'papaparse';
 import { dataUrls, dataConfig } from '../data-config';
+import { getAverage, getGroupPower } from '../systems';
 
 const { deputees: DATA_DEPUTEES_URL, groups: DATA_GROUPS_URL } = dataUrls;
 const mappingIndividuals = dataConfig.categories.individuals;
@@ -95,10 +96,9 @@ export default create((set, get) => ({
   // Gather data and create groups
   organizeData: () => {
     const { data, getStats } = get();
-    let groups = data.groups;
 
     // For each group, add the members
-    groups = groups.map((group) => {
+    const associatedData = data.groups.map((group) => {
       const members = data.deputees.filter(
         (d) => d.groupShort === group.shortName,
       );
@@ -109,87 +109,27 @@ export default create((set, get) => ({
     });
 
     // Get the power stats for each group
-    const powerStats = getStats(groups);
+    const stats = getStats(associatedData);
     // Add the power stats to the groups
-    groups.forEach((group) => {
+    associatedData.forEach((group) => {
       group.stats = {
-        ...powerStats[group.shortName],
-        quantity: group.data.length,
+        power: stats.powers[group.shortName],
+        average: stats.averages[group.shortName],
       };
     });
 
-    set({ organizedData: groups });
+    set({ organizedData: associatedData });
   },
 
   // Stats
   getStats: (groups) => {
-    const { data } = get();
+    // Calculate the average stats for some data
+    const averages = getAverage(groups);
+    const powers = getGroupPower(groups, averages);
 
-    const getAverageParticipation = () => {
-      let missingData = 0;
-      let totalParticipation = 0;
-
-      groups.forEach((g) => {
-        if (isNaN(Number(g.participationScore))) {
-          missingData++;
-          return;
-        }
-
-        totalParticipation += Number(g.participationScore);
-      });
-
-      return totalParticipation / (data.length - missingData);
+    return {
+      averages,
+      powers,
     };
-
-    const getGroupPower = (averageParticipation) => {
-      let stats = {};
-
-      // For each group, calculate the power
-      groups.forEach((group) => {
-        const groupData = group.data;
-        let groupPower = 0;
-        let missingData = 0;
-
-        groupData.forEach((d) => {
-          if (isNaN(Number(d.participationScore))) {
-            // If it's not a number, set it to the average participation
-            missingData++;
-            groupPower += averageParticipation;
-          } else {
-            // Otherwise, add it to the group power
-            groupPower += Number(d.participationScore);
-          }
-        });
-
-        stats[group.shortName] = {
-          power: {
-            value: groupPower,
-            missing: missingData,
-          },
-        };
-      });
-
-      // Get all values of power for each group...
-      const totalPower = Object.values(stats).reduce((acc, group) => {
-        return acc + group.power.value;
-      }, 0);
-
-      // ... and set their power percentage based on the total power
-      Object.keys(stats).forEach((group) => {
-        stats[group].power.percentage = (
-          (stats[group].power.value / totalPower) *
-          100
-        ).toFixed(2);
-      });
-
-      return stats;
-    };
-
-    // Calculate the average participation for all data
-    const averageParticipation = getAverageParticipation();
-    // Calculate the power for each group
-    const power = getGroupPower(averageParticipation);
-
-    return power;
   },
 }));

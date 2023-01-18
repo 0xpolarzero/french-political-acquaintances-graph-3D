@@ -74,3 +74,8 @@ blockquote {
   color: #ff6666;
   cursor: pointer;
 }
+
+.error {
+  color: #ff6666;
+  font-weight: 700;
+}

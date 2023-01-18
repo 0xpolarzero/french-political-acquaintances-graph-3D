@@ -46,7 +46,29 @@ const formatContact = {
   },
 };
 
-export const organizeDrawerData = (data) => {
+const formatStats = (individualStats, groupStats) => {
+  const max = 100;
+
+  const data = Object.keys(individualStats).map((key) => {
+    const type = individualStats[key].type;
+    const individualValue =
+      /* isNaN(individualStats[key].value)
+      ? 0
+      :  */ individualStats[key].value;
+    const groupValue = groupStats[key];
+
+    return {
+      type,
+      A: individualValue * 100,
+      B: groupValue * 100,
+      fullMark: max,
+    };
+  });
+
+  return data;
+};
+
+export const organizeDrawerData = (data, groupsData) => {
   const generalData = {
     // gender: { type: 'Genre', value: data.gender },
     firstName: { type: 'Prénom', value: data.firstName },
@@ -101,22 +123,32 @@ export const organizeDrawerData = (data) => {
   };
 
   const statsData = {
+    loyalty: { type: 'Loyauté', value: data.loyaltyScore },
     participation: {
       type: 'Participation',
       value: data.participationScore,
     },
-    participationSpecialites: {
+    specParticipation: {
       type: 'Participation aux séances liées à la spécialité',
       value: data.specParticipationScore,
     },
-    loyalty: { type: 'Loyauté', value: data.loyaltyScore },
     majority: { type: 'Majorité', value: data.majorityScore },
   };
+
+  const statsFormatted = formatStats(statsData, groupsData);
 
   return {
     generalData,
     politicalData,
     contactData,
-    statsData,
+    statsData: statsFormatted,
   };
+};
+
+export const getOppositeColor = (color) => {
+  const colorHex = color.replace('#', '');
+  const colorHexOpposite = (0xffffff ^ parseInt(colorHex, 16)).toString(16);
+  const colorOpposite = `#${colorHexOpposite}`;
+
+  return colorOpposite;
 };

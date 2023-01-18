@@ -1,12 +1,23 @@
 import { Collapse, Drawer, Table } from 'antd';
 import { useEffect, useState } from 'react';
+import {
+  Legend,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+} from 'recharts';
+import useData from '../../../stores/useData';
 import useInterface from '../../../stores/useInterface';
-import { organizeDrawerData } from '../../../systems';
+import { getOppositeColor, organizeDrawerData } from '../../../systems';
 
 const { Panel } = Collapse;
 
 const IndividualStats = () => {
   const { drawer, closeDrawer } = useInterface();
+  const { organizedData: groupsData } = useData();
   const { data, type, isOpen } = drawer;
   const [dataCurated, setDataCurated] = useState({
     general: {},
@@ -24,10 +35,12 @@ const IndividualStats = () => {
       return acc;
     }, {});
 
-    const { generalData, politicalData, contactData, statsData } =
-      organizeDrawerData(curated);
+    const groupData = groupsData.find(
+      (group) => group.shortName === data.groupShort,
+    );
 
-    console.log('statsData', statsData);
+    const { generalData, politicalData, contactData, statsData } =
+      organizeDrawerData(curated, groupData.stats.average);
 
     setDataCurated({
       general: generalData,
@@ -112,7 +125,7 @@ const IndividualStats = () => {
         </Panel>
 
         {/* Stats */}
-        <Panel
+        {/* <Panel
           header={<span className='panel-header'>Statistiques</span>}
           key='4'
         >
@@ -128,14 +141,73 @@ const IndividualStats = () => {
             />
             <Table.Column dataIndex='value' />
           </Table>
-        </Panel>
+        </Panel> */}
       </Collapse>
+      {/* Stats */}
+      <Chart
+        data={dataCurated.stats}
+        individualName={`${data.firstName} ${data.lastName}`}
+        groupName={`${data.groupShort} (moyenne)`}
+      />
     </Drawer>
   );
 };
 
-const Chart = ({ data }) => {
-  return null;
+const Chart = ({ data, individualName, groupName }) => {
+  const [missingData, setMissingData] = useState(null);
+
+  useEffect(() => {
+    if (!data) return;
+
+    const errors = Object.values(data).reduce((acc, value) => {
+      const keys = Object.keys(value);
+      keys.forEach((key) => {
+        if (key !== 'type' && isNaN(value[key])) acc[value.type] = value[key];
+      });
+      return acc;
+    }, {});
+
+    Object.keys(errors).length === 0
+      ? setMissingData(null)
+      : setMissingData(errors);
+  }, [data]);
+
+  return (
+    <>
+      {missingData && (
+        <>
+          <p className='error' style={{ textAlign: 'center' }}>
+            Certaines données sont manquantes pour ce député:
+          </p>
+          <p className='error' style={{ textAlign: 'center', fontWeight: 400 }}>
+            {Object.keys(missingData).join(' - ')}
+          </p>
+        </>
+      )}
+      <ResponsiveContainer width='100%' height={400}>
+        <RadarChart cx='50%' cy='50%' outerRadius='80%' data={data}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey='type' />
+          <PolarRadiusAxis angle={45} domain={[0, 100]} />
+          <Radar
+            name={individualName}
+            dataKey='A'
+            stroke='#8884d8'
+            color='#8884d8'
+            fillOpacity={0.7}
+          />
+          <Radar
+            name={groupName}
+            dataKey='B'
+            stroke='#82ca9d'
+            color='#82ca9d'
+            fillOpacity={0.5}
+          />
+          <Legend />
+        </RadarChart>
+      </ResponsiveContainer>
+    </>
+  );
 };
 
 export default IndividualStats;

@@ -1,7 +1,6 @@
-import Overlay from './Overlay';
-import Hints from './Hints';
-import GroupStats from './Drawer/GroupStats';
-import IndividualStats from './Drawer/IndividualStats';
+import { Hints, Overlay } from './UI';
+import GroupDrawer from './Drawer/GroupDrawer';
+import IndividualDrawer from './Drawer/IndividualDrawer';
 
 const Interface = () => {
   return (
@@ -9,8 +8,8 @@ const Interface = () => {
       <Overlay />
       <Hints />
 
-      <GroupStats />
-      <IndividualStats />
+      <GroupDrawer />
+      <IndividualDrawer />
     </>
   );
 };

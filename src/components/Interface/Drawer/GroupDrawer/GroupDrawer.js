@@ -1,7 +1,7 @@
 import { Drawer } from 'antd';
-import useInterface from '../../../stores/useInterface';
+import useInterface from '../../../../stores/useInterface';
 
-const GroupStats = () => {
+const GroupDrawer = () => {
   const { drawer, closeDrawer } = useInterface();
   const { data, type, isOpen } = drawer;
 
@@ -20,4 +20,4 @@ const GroupStats = () => {
   );
 };
 
-export default GroupStats;
+export default GroupDrawer;

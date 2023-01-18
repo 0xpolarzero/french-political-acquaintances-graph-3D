@@ -10,8 +10,8 @@ import {
   TbQuestionMark,
   TbSelect,
 } from 'react-icons/tb';
-import useData from '../../stores/useData';
-import useInterface from '../../stores/useInterface';
+import useData from '../../../stores/useData';
+import useInterface from '../../../stores/useInterface';
 
 const { Panel } = Collapse;
 

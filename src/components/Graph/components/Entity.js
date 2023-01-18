@@ -1,9 +1,9 @@
 import { animated, useSpring } from '@react-spring/three';
 import { useEffect } from 'react';
-import { attractIndividual, getIndividualColor } from '../../systems';
-import useGraphics from '../../stores/useGraphics';
-import useInteraction from '../../stores/useInteraction';
-import useInterface from '../../stores/useInterface';
+import { attractIndividual, getIndividualColor } from '../../../systems';
+import useGraphics from '../../../stores/useGraphics';
+import useInteraction from '../../../stores/useInteraction';
+import useInterface from '../../../stores/useInterface';
 
 const Entity = ({
   data,

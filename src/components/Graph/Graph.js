@@ -1,5 +1,5 @@
 import { Environment } from '@react-three/drei';
-import Groups from './Groups';
+import Groups from './components';
 import useGraphics from '../../stores/useGraphics';
 import useInteraction from '../../stores/useInteraction';
 

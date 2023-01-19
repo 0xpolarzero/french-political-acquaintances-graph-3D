@@ -55,7 +55,7 @@ const ChartBar = ({
   return (
     <>
       <ErrorComponent data={individualData} />
-      <CHARTS.ResponsiveContainer width='100%' height='100%'>
+      <CHARTS.ResponsiveContainer width='100%' height={400}>
         <CHARTS.BarChart
           width={500}
           height={300}

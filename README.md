@@ -41,3 +41,5 @@ Stats
 
 Compare all groups (members, majority proximity, inclusiveness...)
 https://recharts.org/en-US/examples/SimpleRadarChart
+
+Also CustomActiveShapePieChart for overall stats (power percentage)

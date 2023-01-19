@@ -102,6 +102,7 @@ export const organizeDrawerData = (data) => {
 
   const statsData = {
     loyalty: { type: 'Loyauté', value: data.loyaltyScore },
+    majority: { type: 'Majorité', value: data.majorityScore },
     participation: {
       type: 'Participation',
       value: data.participationScore,
@@ -110,7 +111,6 @@ export const organizeDrawerData = (data) => {
       type: 'Participation (spécialité)',
       value: data.specParticipationScore,
     },
-    majority: { type: 'Majorité', value: data.majorityScore },
   };
 
   return {
@@ -135,8 +135,8 @@ export const formatStatsForChart = {
 
       return {
         type,
-        A: individualValue * 100,
-        B: groupValue * 100,
+        A: Number((individualValue * 100).toFixed(2)),
+        B: Number((groupValue * 100).toFixed(2)),
         fullMark: max,
       };
     });
@@ -152,8 +152,8 @@ export const formatStatsForChart = {
 
       return {
         name: type,
-        A: individualValue * 100,
-        B: groupValue * 100,
+        A: Number((individualValue * 100).toFixed(2)),
+        B: Number((groupValue * 100).toFixed(2)),
         amt: 100,
       };
     });

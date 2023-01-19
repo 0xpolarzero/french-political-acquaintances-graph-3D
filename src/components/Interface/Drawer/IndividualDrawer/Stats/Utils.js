@@ -27,7 +27,7 @@ const ErrorComponent = ({ data }) => {
   return (
     <>
       <p className='error' style={{ textAlign: 'center' }}>
-        Certaines données sont manquantes pour ce député:
+        Certaines données sont manquantes pour ce.tte député.e:
       </p>
       <p className='error' style={{ textAlign: 'center', fontWeight: 400 }}>
         {missingData.join(' - ')}

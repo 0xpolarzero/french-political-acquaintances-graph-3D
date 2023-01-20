@@ -1,17 +1,16 @@
-import { Drawer } from 'antd';
 import { useEffect, useState } from 'react';
-import { useData, useInterface } from 'src/stores';
+import { Drawer } from 'antd';
+import { organizeDrawerData } from 'src/systems';
+import { useInterface } from 'src/stores';
+import InfoCollapse from './Informations';
 
 const GroupDrawer = () => {
   const { drawer, closeDrawer } = useInterface();
-  const { organizedData: groupsData } = useData();
   const { data, type, isOpen } = drawer;
   const [dataCurated, setDataCurated] = useState({
     general: {},
-    political: {},
-    contact: {},
-    individualStats: {},
-    groupStats: {},
+    members: [],
+    stats: {},
   });
 
   useEffect(() => {
@@ -24,22 +23,17 @@ const GroupDrawer = () => {
     }, {});
     console.log(curated);
 
-    // const { generalData, politicalData, contactData, statsData } =
-    //   organizeDrawerData(curated);
+    const { generalData, membersData, statsData } =
+      organizeDrawerData.group(curated);
 
     setDataCurated({
-      // general: generalData,
-      // political: politicalData,
-      // contact: contactData,
-      // individualStats: statsData,
-      // groupStats: groupData.stats.average,
+      general: generalData,
+      members: membersData,
+      stats: statsData,
     });
   }, [data]);
 
   if (!data || type !== 'group') return null;
-
-  // Image
-  // Last update
 
   return (
     <Drawer
@@ -50,8 +44,21 @@ const GroupDrawer = () => {
       destroyOnClose
       title={`${data.name} (${data.shortName})`}
     >
-      {/* <InfoCollapse data={dataCurated} /> */}
+      <InfoCollapse
+        data={{ general: dataCurated.general, members: dataCurated.members }}
+      />
       {/* Stats */}
+
+      <div className='last-update' style={{ marginTop: '1rem', opacity: 0.7 }}>
+        <p>
+          Dernière mise à jour :{' '}
+          {new Date(data.lastUpdate).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </p>
+      </div>
     </Drawer>
   );
 };

@@ -52,7 +52,7 @@ const IndividualDrawer = () => {
       open={isOpen && type === 'individual'}
       onClose={closeDrawer}
       destroyOnClose
-      title={`${data.firstName} ${data.lastName}`}
+      title={`${data.firstName} ${data.lastName} (${data.groupShort})`}
     >
       <InfoCollapse data={dataCurated} />
       {/* Stats */}

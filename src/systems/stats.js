@@ -64,9 +64,7 @@ export const getGlobalAverage = (averages, powers) => {
     majority: (majorityScore / Object.keys(averages).length).toFixed(2),
     loyalty: (loyaltyScore / Object.keys(averages).length).toFixed(2),
     cohesion: (cohesionScore / Object.keys(averages).length).toFixed(2),
-    womensPercentage: (womenPercentage / Object.keys(averages).length).toFixed(
-      2,
-    ),
+    women: (womenPercentage / Object.keys(averages).length).toFixed(2),
     power: (powerScore / Object.keys(averages).length).toFixed(2),
     membersAmount: membersAmount,
   };

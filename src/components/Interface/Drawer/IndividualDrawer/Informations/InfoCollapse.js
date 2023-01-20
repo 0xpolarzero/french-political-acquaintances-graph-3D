@@ -8,7 +8,11 @@ const InfoCollapse = ({ data }) => {
       key: 'type',
       title: '',
       dataIndex: 'type',
-      render: (value) => <span style={{ fontWeight: 600 }}>{value}</span>,
+      render: (value, index) => (
+        <span key={index} style={{ fontWeight: 600 }}>
+          {value}
+        </span>
+      ),
     },
     {
       key: 'value',

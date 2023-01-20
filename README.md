@@ -19,27 +19,15 @@ See more information about them, or just navigate with a better view
 
 http://www.packomania.com/
 
-[ ] Display informations in modal on click on hint
-[ ] use scoreCohesion to break the sphere more or less (fragment)
-[ ] use scoreRose/women to display on the sphere
-
-Interface:
-
-- Show GroupDrawer or IndividualDrawer
-- In GroupDrawer, show stats + table with all individuals and their infos
-- Let search individual in there
-
 Statistiques:
 datan.fr
 https://www.data.gouv.fr/fr/datasets/deputes-actifs-de-lassemblee-nationale-informations-et-statistiques/
-Use this as well:
 https://www.data.gouv.fr/fr/datasets/groupes-politiques-actifs-de-lassemblee-nationale-informations-et-statistiques/
--> get name+symbol
--> get color
 
-Stats
+TODO
 
-Compare all groups (members, majority proximity, inclusiveness...)
-https://recharts.org/en-US/examples/SimpleRadarChart
-
-Also CustomActiveShapePieChart for overall stats (power percentage)
+- Update A propos des statistiques in Group Drawer
+- Compare all groups (members, majority proximity, inclusiveness...)
+  https://recharts.org/en-US/examples/SimpleRadarChart
+- Also CustomActiveShapePieChart for overall stats (power percentage)
+- use scoreCohesion to break the sphere more or less (fragment)

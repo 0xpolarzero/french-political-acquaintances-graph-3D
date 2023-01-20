@@ -1,8 +1,11 @@
 import { Collapse, Table } from 'antd';
+import { useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 
-const InfoCollapse = ({ data }) => {
+const InfoCollapse = ({ data, groupData }) => {
+  const { setDrawer } = useInterface();
+
   const columns = [
     {
       key: 'type',
@@ -18,6 +21,12 @@ const InfoCollapse = ({ data }) => {
       key: 'value',
       title: '',
       dataIndex: 'value',
+      onCell: (record, index) => {
+        if (record.type === 'Groupe')
+          return {
+            onClick: () => setDrawer(null, groupData, 'group'),
+          };
+      },
     },
   ];
 
@@ -74,6 +83,9 @@ const InfoCollapse = ({ data }) => {
           dataSource={Object.values(data.political)}
           columns={columns}
           pagination={false}
+          rowClassName={(record, index) => {
+            if (record.type === 'Groupe') return 'cursor';
+          }}
         />
       </Panel>
 

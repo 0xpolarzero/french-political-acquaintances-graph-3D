@@ -6,7 +6,7 @@ import { organizeDrawerData } from 'src/systems';
 import { useData, useInterface } from 'src/stores';
 
 const IndividualDrawer = () => {
-  const { drawer, closeDrawer } = useInterface();
+  const { drawer, setDrawer, closeDrawer } = useInterface();
   const { organizedData: groupsData } = useData();
   const { data, type, isOpen } = drawer;
   const [dataCurated, setDataCurated] = useState({
@@ -17,6 +17,9 @@ const IndividualDrawer = () => {
     groupStats: {},
   });
 
+  const groupData =
+    data && groupsData.find((group) => group.shortName === data.groupShort);
+
   useEffect(() => {
     if (!data || type !== 'individual') return;
 
@@ -25,10 +28,6 @@ const IndividualDrawer = () => {
       else acc[key] = data[key];
       return acc;
     }, {});
-
-    const groupData = groupsData.find(
-      (group) => group.shortName === data.groupShort,
-    );
 
     const { generalData, politicalData, contactData, statsData } =
       organizeDrawerData.individual(curated);
@@ -53,8 +52,16 @@ const IndividualDrawer = () => {
       onClose={closeDrawer}
       destroyOnClose
       title={`${data.firstName} ${data.lastName} (${data.groupShort})`}
+      extra={
+        <button
+          onClick={() => setDrawer(null, groupData, 'group')}
+          // style={{ color: groupData.associatedColor }}
+        >
+          Voir la fiche du groupe
+        </button>
+      }
     >
-      <InfoCollapse data={dataCurated} />
+      <InfoCollapse data={dataCurated} groupData={groupData} />
       {/* Stats */}
       <StatsVisualization
         individualData={dataCurated.individualStats}

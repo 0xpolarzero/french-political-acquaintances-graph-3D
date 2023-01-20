@@ -101,7 +101,11 @@ const InfoCollapse = ({ data }) => {
         header={<span className='panel-header'>Membres du groupe</span>}
         key='2'
       >
-        <Table dataSource={dataSource} columns={columnsMembers} />
+        <Table
+          dataSource={dataSource}
+          columns={columnsMembers}
+          className='cursor'
+        />
       </Panel>
     </Collapse>
   );

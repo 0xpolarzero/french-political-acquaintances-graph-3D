@@ -24,7 +24,7 @@ export const getAverage = (groups) => {
       majority: ((majorityScore / groupData.length) * 100).toFixed(2),
       loyalty: ((loyaltyScore / groupData.length) * 100).toFixed(2),
       cohesion: (group.cohesionScore * 100).toFixed(2),
-      womenPercentage: group.womenPercentage,
+      women: group.womenPercentage,
       membersAmount: group.membersAmount,
     };
   });
@@ -49,7 +49,7 @@ export const getGlobalAverage = (averages, powers) => {
     majorityScore += Number(average.majority);
     loyaltyScore += Number(average.loyalty);
     cohesionScore += Number(average.cohesion);
-    womenPercentage += Number(average.womenPercentage);
+    womenPercentage += Number(average.women);
     membersAmount += Number(average.membersAmount);
     powerScore += Number(powers[key]);
   });

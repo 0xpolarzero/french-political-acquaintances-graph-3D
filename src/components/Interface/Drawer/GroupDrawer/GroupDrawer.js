@@ -3,6 +3,7 @@ import { Drawer } from 'antd';
 import { organizeDrawerData } from 'src/systems';
 import { useInterface } from 'src/stores';
 import InfoCollapse from './Informations';
+import StatsVisualization from './Stats';
 
 const GroupDrawer = () => {
   const { drawer, closeDrawer } = useInterface();
@@ -21,7 +22,6 @@ const GroupDrawer = () => {
       else acc[key] = data[key];
       return acc;
     }, {});
-    console.log(curated);
 
     const { generalData, membersData, statsData } =
       organizeDrawerData.group(curated);
@@ -47,7 +47,11 @@ const GroupDrawer = () => {
       <InfoCollapse
         data={{ general: dataCurated.general, members: dataCurated.members }}
       />
-      {/* Stats */}
+      <StatsVisualization
+        data={dataCurated.stats}
+        name={data.shortName}
+        color={data.associatedColor}
+      />
 
       <div className='last-update' style={{ marginTop: '1rem', opacity: 0.7 }}>
         <p>

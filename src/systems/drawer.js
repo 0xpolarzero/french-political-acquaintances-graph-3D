@@ -219,7 +219,7 @@ export const organizeDrawerData = {
       { key: 'cohesion', type: 'Cohésion' },
       { key: 'power', type: 'Pouvoir' },
       { key: 'women', type: 'Pourcentage de femmes' },
-      { key: 'membersAmount', type: 'Nombre de membres' },
+      // { key: 'membersAmount', type: 'Nombre de membres' },
     ];
 
     stats.forEach((stat) => {
@@ -239,39 +239,42 @@ export const organizeDrawerData = {
 };
 
 export const formatStatsForChart = {
-  radar: (individualData, groupData) => {
+  individual: (baseData, compareData, graph) => {
     const max = 100;
 
-    const formatted = Object.keys(individualData).map((key) => {
-      const type = individualData[key].type;
-      const individualValue =
-        /* isNaN(individualStats[key].value)
-        ? 0
-        :  */ individualData[key].value;
-      const groupValue = groupData[key];
+    const formatted = Object.keys(baseData).map((key) => {
+      const type = baseData[key].type;
+      const individualValue = baseData[key].value;
+      const groupValue = compareData[key];
+
+      const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
 
       return {
         type,
         A: Number((individualValue * 100).toFixed(2)),
         B: Number(groupValue).toFixed(2),
-        fullMark: max,
+        ...ref,
       };
     });
 
     return formatted;
   },
 
-  bar: (individualData, groupData, individualLabel, groupLabel) => {
-    const formatted = Object.keys(individualData).map((key) => {
-      const type = individualData[key].type;
-      const individualValue = individualData[key].value;
-      const groupValue = groupData[key];
+  group: (data, graph) => {
+    const max = 100;
+
+    const formatted = Object.keys(data).map((key) => {
+      const type = data[key].type;
+      const groupValue = data[key].group;
+      const globalValue = data[key].global;
+
+      const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
 
       return {
-        name: type,
-        A: Number((individualValue * 100).toFixed(2)),
-        B: Number(groupValue).toFixed(2),
-        amt: 100,
+        type,
+        A: Number(Number(groupValue).toFixed(2)),
+        B: Number(Number(globalValue).toFixed(2)),
+        ...ref,
       };
     });
 

@@ -1,40 +1,36 @@
 import * as CHARTS from 'recharts';
-import { ErrorComponent } from './Utils';
 import { formatStatsForChart } from 'src/systems';
+import { ErrorComponent } from './Utils';
 
-const ChartRadar = ({
-  individualData,
-  groupData,
-  individualLabel,
-  groupLabel,
-}) => {
-  const data = formatStatsForChart.individual(
-    individualData,
-    groupData,
-    'radar',
-  );
+const ChartRadar = ({ data, name, color }) => {
+  const formattedData = formatStatsForChart.group(data, 'radar');
 
   return (
     <>
-      <ErrorComponent data={individualData} />
+      <ErrorComponent data={formattedData} />
       <CHARTS.ResponsiveContainer width='100%' height={400}>
-        <CHARTS.RadarChart cx='50%' cy='50%' outerRadius='80%' data={data}>
+        <CHARTS.RadarChart
+          cx='50%'
+          cy='50%'
+          outerRadius='80%'
+          data={formattedData}
+        >
           <CHARTS.PolarGrid />
           <CHARTS.PolarAngleAxis dataKey='type' />
           <CHARTS.PolarRadiusAxis angle={45} domain={[0, 100]} />
           <CHARTS.Radar
-            name={individualLabel}
+            name={name}
             dataKey='A'
-            stroke='#8884d8'
-            fill='#8884d8'
+            stroke={color}
+            fill={color}
             fillOpacity={0.7}
           />
           <CHARTS.Radar
-            name={groupLabel}
+            name='Global'
             dataKey='B'
-            stroke='#82ca9d'
-            fill='#82ca9d'
-            fillOpacity={0.5}
+            stroke='#fff'
+            fill='#fff'
+            fillOpacity={0.3}
           />
           <CHARTS.Legend />
         </CHARTS.RadarChart>
@@ -43,22 +39,18 @@ const ChartRadar = ({
   );
 };
 
-const ChartBar = ({
-  individualData,
-  groupData,
-  individualLabel,
-  groupLabel,
-}) => {
-  const data = formatStatsForChart.individual(individualData, groupData, 'bar');
+const ChartBar = ({ data, name, color }) => {
+  const formattedData = formatStatsForChart.group(data, 'bar');
+  console.log('bar data', formattedData);
 
   return (
     <>
-      <ErrorComponent data={individualData} />
+      <ErrorComponent data={formattedData} />
       <CHARTS.ResponsiveContainer width='100%' height={400}>
         <CHARTS.BarChart
           width={500}
           height={300}
-          data={data}
+          data={formattedData}
           margin={{
             top: 5,
             right: 30,
@@ -67,12 +59,12 @@ const ChartBar = ({
           }}
         >
           <CHARTS.CartesianGrid strokeDasharray='3 3' />
-          <CHARTS.XAxis dataKey='name' />
+          <CHARTS.XAxis dataKey='type' />
           <CHARTS.YAxis />
           <CHARTS.Tooltip />
           <CHARTS.Legend />
-          <CHARTS.Bar dataKey='A' name={individualLabel} fill='#8884d8' />
-          <CHARTS.Bar dataKey='B' name={groupLabel} fill='#82ca9d' />
+          <CHARTS.Bar dataKey='A' name={name} fill={color} />
+          <CHARTS.Bar dataKey='B' name='Global' fill='#848484' />
         </CHARTS.BarChart>
       </CHARTS.ResponsiveContainer>
     </>

@@ -5,15 +5,48 @@ const { Panel } = Collapse;
 const InfoCollapse = ({ data }) => {
   const columns = [
     {
+      key: 'type',
       title: '',
       dataIndex: 'type',
       render: (value) => <span style={{ fontWeight: 600 }}>{value}</span>,
     },
     {
+      key: 'value',
       title: '',
       dataIndex: 'value',
     },
   ];
+
+  const columnsWithImage = [
+    ...columns,
+    {
+      key: 'image',
+      title: '',
+      dataIndex: 'image',
+      render: () => (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <img
+            src={data.image}
+            alt='profile'
+            style={{ width: 'auto', height: 200 }}
+          />
+        </div>
+      ),
+      onCell: (_, index) => {
+        if (index !== 0) return { rowSpan: 0 };
+        return {
+          rowSpan: Object.values(data.general).length,
+        };
+      },
+    },
+  ];
+
   return (
     <Collapse defaultActiveKey={['1']} accordion ghost>
       {/* General informations */}
@@ -21,27 +54,11 @@ const InfoCollapse = ({ data }) => {
         header={<span className='panel-header'>Informations générales</span>}
         key='1'
       >
-        <Table dataSource={Object.values(data.general)} pagination={false}>
-          <Table.Column
-            dataIndex='type'
-            render={(value) => <span style={{ fontWeight: 600 }}>{value}</span>}
-          />
-          <Table.Column dataIndex='value' />
-          {/* Another column but only for the image */}
-          {data.image && (
-            <Table.Column
-              dataIndex='image'
-              rowSpan={Object.values(data.general).length}
-              render={() => (
-                <img
-                  src={data.image}
-                  alt='profile'
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              )}
-            />
-          )}
-        </Table>
+        <Table
+          dataSource={Object.values(data.general)}
+          columns={columnsWithImage}
+          pagination={false}
+        ></Table>
       </Panel>
 
       {/* Political informations */}

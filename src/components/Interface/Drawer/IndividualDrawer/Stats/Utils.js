@@ -17,8 +17,6 @@ const ErrorComponent = ({ data }) => {
       return acc;
     }, []);
 
-    console.log('errors', errors);
-
     if (errors.length) setMissingData(errors);
   }, [data]);
 

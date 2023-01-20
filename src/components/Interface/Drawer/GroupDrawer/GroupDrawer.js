@@ -37,7 +37,7 @@ const GroupDrawer = () => {
 
   return (
     <Drawer
-      className='stats individual'
+      className='stats group'
       width='80%'
       open={isOpen && type === 'group'}
       onClose={closeDrawer}

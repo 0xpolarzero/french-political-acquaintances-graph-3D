@@ -11,3 +11,9 @@ export const numberToPeriod = (number) => {
   if (number < 2) return '1 an';
   return `${Math.round(number)} ans`;
 };
+
+export const getLighterColor = (color) => {
+  const lighter = color.clone();
+  lighter.offsetHSL(0, 0, 0.2);
+  return lighter;
+};

@@ -26,7 +26,7 @@ const Entity = ({
     type === 'individual'
       ? // Scale the score participation that is between 0 and 1 into 0.3 and 1.5
         0.5 * (data.participationScore * 1.2 + 0.3)
-      : 1.5 + data.stats.power.percentage / 10;
+      : 1.5 + data.stats.average.power / 10;
   // Increase the scale if it's hovered
   if (hovered.item && hovered.item.id === data.id) {
     if (type === 'group') scale *= 1.5;

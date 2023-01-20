@@ -87,6 +87,7 @@ export const dataConfig = {
       scoreParticipation: 'participationScore',
       scoreRose: 'roseScore',
       scoreCohesion: 'cohesionScore',
+      socreCohesion: 'cohesionScore',
       women: 'womenPercentage',
 
       // Added in the code

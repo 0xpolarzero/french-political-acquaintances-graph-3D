@@ -8,7 +8,7 @@ export const getIndividualsPositions = (group, basePos) => {
 
   const positions = coords.map((coord, index) => {
     // Give it a bit more radius if the parent sphere is bigger
-    const multiplier = 10 + group.stats.power.percentage / 10;
+    const multiplier = 10 + group.stats.average.power / 10;
 
     const multiplied = [
       Number(coord['x']) * multiplier,

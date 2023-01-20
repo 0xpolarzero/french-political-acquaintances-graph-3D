@@ -3,6 +3,7 @@ import axios from 'axios';
 import { parse } from 'papaparse';
 import { dataUrls, dataConfig } from 'src/data-config';
 import { getAverage, getGroupPower } from 'src/systems';
+import { getGlobalAverage } from 'src/systems/stats';
 
 const { deputees: DATA_DEPUTEES_URL, groups: DATA_GROUPS_URL } = dataUrls;
 const mappingIndividuals = dataConfig.categories.individuals;
@@ -113,8 +114,11 @@ export default create((set, get) => ({
     // Add the power stats to the groups
     associatedData.forEach((group) => {
       group.stats = {
-        power: stats.powers[group.shortName],
-        average: stats.averages[group.shortName],
+        average: {
+          ...stats.averages[group.shortName],
+          power: stats.powers[group.shortName],
+        },
+        global: stats.globalAverages,
       };
     });
 
@@ -126,10 +130,12 @@ export default create((set, get) => ({
     // Calculate the average stats for some data
     const averages = getAverage(groups);
     const powers = getGroupPower(groups, averages);
+    const globalAverages = getGlobalAverage(averages, powers);
 
     return {
       averages,
       powers,
+      globalAverages,
     };
   },
 }));

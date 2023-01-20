@@ -25,14 +25,14 @@ const ErrorComponent = ({ data }) => {
   if (!missingData.length) return null;
 
   return (
-    <>
+    <div style={{ marginBottom: '1rem' }}>
       <p className='error' style={{ textAlign: 'center' }}>
         Certaines données sont manquantes pour ce.tte député.e:
       </p>
       <p className='error' style={{ textAlign: 'center', fontWeight: 400 }}>
         {missingData.join(' - ')}
       </p>
-    </>
+    </div>
   );
 };
 

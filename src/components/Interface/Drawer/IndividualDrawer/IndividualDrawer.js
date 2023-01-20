@@ -18,7 +18,7 @@ const IndividualDrawer = () => {
   });
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || type !== 'individual') return;
 
     const curated = Object.keys(data).reduce((acc, key) => {
       if (!data[key]) acc[key] = 'N/A';
@@ -31,7 +31,7 @@ const IndividualDrawer = () => {
     );
 
     const { generalData, politicalData, contactData, statsData } =
-      organizeDrawerData(curated);
+      organizeDrawerData.individual(curated);
 
     setDataCurated({
       general: generalData,
@@ -39,13 +39,11 @@ const IndividualDrawer = () => {
       contact: contactData,
       individualStats: statsData,
       groupStats: groupData.stats.average,
+      image: data.image,
     });
   }, [data]);
 
-  if (!data) return null;
-
-  // Image
-  // Last update
+  if (!data || type !== 'individual') return null;
 
   return (
     <Drawer
@@ -64,6 +62,16 @@ const IndividualDrawer = () => {
         individualLabel={`${data.firstName} ${data.lastName}`}
         groupLabel={`${data.groupShort} (moyenne)`}
       />
+      <div className='last-update' style={{ marginTop: '1rem', opacity: 0.7 }}>
+        <p>
+          Dernière mise à jour :{' '}
+          {new Date(data.lastUpdate).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </p>
+      </div>
     </Drawer>
   );
 };

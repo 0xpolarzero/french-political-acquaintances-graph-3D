@@ -46,79 +46,106 @@ const formatContact = {
   },
 };
 
-export const organizeDrawerData = (data) => {
-  const generalData = {
-    // gender: { type: 'Genre', value: data.gender },
-    firstName: { type: 'Prénom', value: data.firstName },
-    lastName: { type: 'Nom', value: data.lastName },
-    age: {
-      type: 'Âge',
-      value: `${data.age} ans (${new Date(
-        data.birthDate,
-      ).toLocaleDateString()})`,
-    },
-    department: {
-      type: 'Département',
-      value: `${data.departmentName} (${data.departmentCode})`,
-    },
-    job: { type: 'Profession', value: data.job },
-  };
+export const organizeDrawerData = {
+  individual: (data) => {
+    const generalData = {
+      // gender: { type: 'Genre', value: data.gender },
+      firstName: { type: 'Prénom', value: data.firstName },
+      lastName: { type: 'Nom', value: data.lastName },
+      age: {
+        type: 'Âge',
+        value: `${data.age} ans (${new Date(
+          data.birthDate,
+        ).toLocaleDateString()})`,
+      },
+      department: {
+        type: 'Département',
+        value: `${data.departmentName} (${data.departmentCode})`,
+      },
+      job: { type: 'Profession', value: data.job },
+    };
 
-  const politicalData = {
-    group: {
-      type: 'Groupe',
-      value: `${data.group} (${data.groupShort})`,
-    },
-    majority: {
-      type: 'Groupe déclaré',
-      value: data.maj
-        ? 'Majorité présidentielle'
-        : 'Opposition à la majorité présidentielle',
-    },
-    start: {
-      type: 'Début du mandat',
-      value: new Date(data.startDate).toLocaleDateString(),
-    },
-    experience: {
-      type: 'Expérience',
-      value: `${data.experience} (${data.mandatesAmount} mandats)`,
-    },
-    district: { type: 'Circonscription', value: data.district },
-    legislature: { type: 'Législature', value: data.legislature },
-  };
+    const politicalData = {
+      group: {
+        type: 'Groupe',
+        value: `${data.group} (${data.groupShort})`,
+      },
+      majority: {
+        type: 'Groupe déclaré',
+        value: data.maj
+          ? 'Majorité présidentielle'
+          : 'Opposition à la majorité présidentielle',
+      },
+      start: {
+        type: 'Début du mandat',
+        value: new Date(data.startDate).toLocaleDateString(),
+      },
+      experience: {
+        type: 'Expérience',
+        value: `${data.experience} (${data.mandatesAmount} mandats)`,
+      },
+      district: { type: 'Circonscription', value: data.district },
+      legislature: { type: 'Législature', value: data.legislature },
+    };
 
-  const contactData = {
-    email: {
-      type: 'Email',
-      value: formatContact.email(data.email),
-    },
-    twitter: { type: 'Twitter', value: formatContact.twitter(data.twitter) },
-    facebook: {
-      type: 'Facebook',
-      value: formatContact.facebook(data.facebook),
-    },
-    website: { type: 'Site web', value: formatContact.website(data.website) },
-  };
+    const contactData = {
+      email: {
+        type: 'Email',
+        value: formatContact.email(data.email),
+      },
+      twitter: { type: 'Twitter', value: formatContact.twitter(data.twitter) },
+      facebook: {
+        type: 'Facebook',
+        value: formatContact.facebook(data.facebook),
+      },
+      website: { type: 'Site web', value: formatContact.website(data.website) },
+    };
 
-  const statsData = {
-    loyalty: { type: 'Loyauté', value: data.loyaltyScore },
-    majority: { type: 'Majorité', value: data.majorityScore },
-    participation: {
-      type: 'Participation',
-      value: data.participationScore,
-    },
-    specParticipation: {
-      type: 'Participation (spécialité)',
-      value: data.specParticipationScore,
-    },
-  };
+    const statsData = {
+      loyalty: { type: 'Loyauté', value: data.loyaltyScore },
+      majority: { type: 'Majorité', value: data.majorityScore },
+      participation: {
+        type: 'Participation',
+        value: data.participationScore,
+      },
+      specParticipation: {
+        type: 'Participation (spécialité)',
+        value: data.specParticipationScore,
+      },
+    };
 
-  return {
-    generalData,
-    politicalData,
-    contactData,
-    statsData,
-  };
+    return {
+      generalData,
+      politicalData,
+      contactData,
+      statsData,
+    };
+  },
+  group: (data) => {
+    const generalData = {
+      // name, shortName, age + startData, membersAmount, politicalPosition
+      name: { type: 'Nom', value: data.name },
+      shortName: { type: 'Nom court', value: data.shortName },
+      age: {
+        type: 'Âge',
+        value: `${data.age} ans (${new Date(
+          data.startDate,
+        ).toLocaleDateString()})`,
+      },
+      membersAmount: {
+        type: 'Nombre de membres',
+        value: data.membersAmount,
+      },
+      politicalPosition: {
+        type: 'Position politique',
+        value: data.politicalPosition,
+      },
+    };
+
+    const statsData = {
+      //
+    };
+  },
 };
 
 export const formatStatsForChart = {

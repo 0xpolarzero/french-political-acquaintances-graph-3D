@@ -41,7 +41,6 @@ const ChartRadar = ({ data, name, color }) => {
 
 const ChartBar = ({ data, name, color }) => {
   const formattedData = formatStatsForChart.group(data, 'bar');
-  console.log('bar data', formattedData);
 
   return (
     <>

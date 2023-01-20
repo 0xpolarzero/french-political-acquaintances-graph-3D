@@ -19,7 +19,6 @@ const StatsVisualization = ({ data, name, color }) => {
       children: <StatsHelp />,
     },
   ];
-  console.log(data);
 
   return <Tabs defaultActiveKey='1' items={tabItems} />;
 };

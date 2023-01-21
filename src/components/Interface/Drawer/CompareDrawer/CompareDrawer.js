@@ -3,6 +3,7 @@ import { InfoGroup, InfoIndividual } from './Informations';
 import { getLighterColor } from 'src/systems/utils';
 import { useData, useInterface, useStats } from 'src/stores';
 import { searchSystem } from 'src/systems';
+import StatsVisualization from './Stats';
 
 // When opened, always a compareBase but compareTarget can be null
 // If so, let the user select a compareTarget
@@ -79,14 +80,20 @@ const CompareDrawer = () => {
             ))}
         </div>
 
-        <div className='compare-stats'>
-          {/* If there is a base and a target */}
-          {compareBase && compareTarget
-            ? 'Stats component here (that includes the div around)'
-            : compareBase || compareTarget
-            ? 'Choisissez un autre élément à comparer (groupe ou député)'
-            : 'Choisissez des éléments à comparer (groupe.s ou député.s)'}
-        </div>
+        {/* If there is a base and a target */}
+        {compareBase && compareTarget ? (
+          <div className='compate-stats'>
+            <StatsVisualization />
+          </div>
+        ) : compareBase || compareTarget ? (
+          <div className='compare-stats' style={{ gridColumn: 'span 2' }}>
+            Choisissez un autre élément à comparer (groupe ou député).
+          </div>
+        ) : (
+          <div className='compare-stats' style={{ gridColumn: 'span 2' }}>
+            Choisissez des éléments à comparer (groupe.s ou député.s).
+          </div>
+        )}
       </div>
     </Drawer>
   );

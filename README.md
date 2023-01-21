@@ -26,6 +26,9 @@ https://www.data.gouv.fr/fr/datasets/groupes-politiques-actifs-de-lassemblee-nat
 
 TODO
 
+- Create a global Stats component + adapt systems so all is taken care of in one place
+  -> format data individual/group, individual/individual, group/group
+  -> Display any stats on any component
 - Update A propos des statistiques in Group Drawer
 - Compare all groups (members, majority proximity, inclusiveness...)
   https://recharts.org/en-US/examples/SimpleRadarChart

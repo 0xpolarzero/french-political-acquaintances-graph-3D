@@ -1,14 +1,7 @@
 import { Tabs } from 'antd';
 import { ChartBar, ChartRadar } from './Charts';
 
-const StatsVisualization = ({
-  statsA,
-  statsB,
-  labelA,
-  labelB,
-  color,
-  statsGlobal,
-}) => {
+const StatsVisualization = ({ statsA, statsB, labelA, labelB, color }) => {
   if (!statsA || !statsB) return null;
 
   const tabItems = [
@@ -19,7 +12,6 @@ const StatsVisualization = ({
         <ChartBar
           statsA={statsA}
           statsB={statsB}
-          statsGlobal={statsGlobal}
           labelA={labelA}
           labelB={labelB}
           color={color}
@@ -33,7 +25,6 @@ const StatsVisualization = ({
         <ChartRadar
           statsA={statsA}
           statsB={statsB}
-          statsGlobal={statsGlobal}
           labelA={labelA}
           labelB={labelB}
           color={color}

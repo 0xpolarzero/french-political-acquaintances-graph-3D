@@ -247,38 +247,17 @@ export const organizeDrawerData = {
   },
 };
 
-export const formatStatsForChart = (
-  baseData,
-  compareData,
-  globalData,
-  graph,
-) => {
+export const formatStatsForChart = (baseData, compareData, graph) => {
   // Find all keys baseData and compareData have in common
   const keys = Object.keys(baseData).filter((key) => compareData[key]);
   const max = 100;
-
-  console.log('baseData', baseData);
-  console.log('compareData', compareData);
-  console.log('globalData', globalData);
 
   const formatted = keys.map((key) => {
     const type = baseData[key].type;
     const baseValue = baseData[key].value;
     const compareValue = compareData[key].value || compareData[key].group;
-    const globalValue = globalData ? globalData[key].value : null;
 
     const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
-
-    if (globalValue) {
-      console.log('yes');
-      return {
-        type,
-        A: Number(baseValue).toFixed(2),
-        B: Number(compareValue).toFixed(2),
-        C: Number(globalValue).toFixed(2),
-        ...ref,
-      };
-    }
 
     return {
       type,

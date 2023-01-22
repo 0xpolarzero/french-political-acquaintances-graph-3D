@@ -27,6 +27,16 @@ const CompareDrawer = () => {
   const { drawer, closeDrawer } = useInterface();
   const { type, isOpen } = drawer;
   const [curatedData, setCuratedData] = useState(null);
+  const [formattedBase, setFormattedBase] = useState({
+    data: null,
+    label: null,
+    type: null,
+  });
+  const [formattedTarget, setFormattedTarget] = useState({
+    data: null,
+    label: null,
+    type: null,
+  });
 
   const search = searchSystem(organizedData, null, null);
 
@@ -69,29 +79,48 @@ const CompareDrawer = () => {
   };
 
   useEffect(() => {
-    if (!compareBase || !compareTarget) return;
+    if (!compareBase) {
+      setFormattedBase({
+        data: null,
+        label: null,
+        type: null,
+      });
+      return;
+    }
 
     // Make sure all data are well formatted
     const baseCurated = curateData(compareBase.data);
-    const targetCurated = curateData(compareTarget.data);
-
     // Organize data for the drawer
     const baseOrganized = organizeData(baseCurated, compareBase.type);
-    const targetOrganized = organizeData(targetCurated, compareTarget.type);
-    const global = baseOrganized.global || targetOrganized.global || null;
 
-    setCuratedData({
-      base: {
-        ...baseOrganized,
-        label: getLabel(compareBase),
-      },
-      target: {
-        ...targetOrganized,
-        label: getLabel(compareTarget),
-      },
-      global,
+    setFormattedBase({
+      data: baseOrganized,
+      label: getLabel(compareBase),
+      type: compareBase.type,
     });
-  }, [compareBase, compareTarget]);
+  }, [compareBase]);
+
+  useEffect(() => {
+    if (!compareTarget) {
+      setFormattedTarget({
+        data: null,
+        label: null,
+        type: null,
+      });
+      return;
+    }
+
+    // Make sure all data are well formatted
+    const targetCurated = curateData(compareTarget.data);
+    // Organize data for the drawer
+    const targetOrganized = organizeData(targetCurated, compareTarget.type);
+
+    setFormattedTarget({
+      data: targetOrganized,
+      label: getLabel(compareTarget),
+      type: compareTarget.type,
+    });
+  }, [compareTarget]);
 
   if (type !== 'compare') return null;
 
@@ -125,48 +154,46 @@ const CompareDrawer = () => {
 
         <div className='compare-info'>
           {/* If there is a base */}
-          {compareBase &&
-            curatedData &&
-            (compareBase.type === 'individual' ? (
+
+          {formattedBase.data &&
+            (formattedBase.type === 'individual' ? (
               <InfoCollapseIndividual
-                data={curatedData.base}
+                data={formattedBase.data}
                 groupData={null}
               />
             ) : (
-              <InfoCollapseGroup data={curatedData.base} />
+              <InfoCollapseGroup data={formattedBase.data} true />
             ))}
         </div>
 
         <div className='compare-info'>
           {/* If there is a target */}
-          {compareTarget &&
-            curatedData &&
-            (compareTarget.type === 'individual' ? (
+          {formattedTarget.data &&
+            (formattedTarget.type === 'individual' ? (
               <InfoCollapseIndividual
-                data={curatedData.target}
+                data={formattedTarget.data}
                 groupData={null}
               />
             ) : (
-              <InfoCollapseGroup data={curatedData.target} />
+              <InfoCollapseGroup data={formattedTarget.data} true />
             ))}
         </div>
 
         {/* If there is a base and a target */}
-        {compareBase && compareTarget && curatedData ? (
+        {formattedBase.data && formattedTarget.data ? (
           <div
             className='compare-stats'
             style={{ gridColumn: 'span 2', width: '100%' }}
           >
             <StatsVisualization
-              statsA={curatedData.base.stats}
-              statsB={curatedData.target.stats}
-              labelA={curatedData.base.label}
-              labelB={curatedData.target.label}
+              statsA={formattedBase.data.stats}
+              statsB={formattedTarget.data.stats}
+              labelA={formattedBase.label}
+              labelB={formattedTarget.label}
               color={null}
-              statsGlobal={curatedData.global}
             />
           </div>
-        ) : compareBase || compareTarget ? (
+        ) : formattedBase.data || formattedTarget.data ? (
           <div className='compare-stats' style={{ gridColumn: 'span 2' }}>
             Choisissez un autre élément à comparer (groupe ou député).
           </div>

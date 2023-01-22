@@ -76,6 +76,7 @@ const InfoCollapse = ({ data, onlyInfo = true }) => {
     }));
 
   const dataSource =
+    !onlyInfo &&
     data.members?.length !== 0 &&
     data.members[Object.keys(data.members)[0]].value.map((_, index) => {
       return Object.keys(data.members).reduce((acc, key) => {

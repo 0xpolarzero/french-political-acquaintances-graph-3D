@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Collapse, Tooltip } from 'antd';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
-import { BsArrowBarRight } from 'react-icons/bs';
+import { BsArrowBarRight, BsLightbulb, BsListUl } from 'react-icons/bs';
 import { ImCancelCircle, ImSearch, ImWarning } from 'react-icons/im';
 import {
   TbArrowLeft,
@@ -10,13 +10,14 @@ import {
   TbQuestionMark,
   TbSelect,
 } from 'react-icons/tb';
+import { FaBalanceScale } from 'react-icons/fa';
 import { useData, useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 
 const Overlay = () => {
   const { organizedData: data } = useData();
-  const { isOverlayVisible, setIsOverlayVisible } = useInterface();
+  const { isOverlayVisible, setIsOverlayVisible, setDrawer } = useInterface();
 
   const closeInterface = (e) => {
     if (e.key === 'Escape') setIsOverlayVisible(false);
@@ -31,11 +32,22 @@ const Overlay = () => {
 
   return (
     <div className={isOverlayVisible ? 'overlay visible' : 'overlay'}>
-      <div
-        className='interface close'
-        onClick={() => setIsOverlayVisible(false)}
-      >
-        <ImCancelCircle />
+      <div className='interface header'>
+        <button
+          className='special'
+          onClick={() => {
+            setDrawer(null, null, 'global');
+            setIsOverlayVisible(false);
+          }}
+        >
+          Voir les statistiques globales
+        </button>
+        <div
+          className='interface close'
+          onClick={() => setIsOverlayVisible(false)}
+        >
+          <ImCancelCircle />
+        </div>
       </div>
       <Collapse defaultActiveKey={['1']} accordion ghost>
         <Panel
@@ -87,6 +99,7 @@ const Informations = () => {
               pondérée par ce facteur.
             </span>
           }
+          zIndex={10000}
         >
           <TbQuestionMark className='info' />
         </Tooltip>
@@ -187,6 +200,27 @@ const Instructions = () => {
       <span>
         Cliquez sur "Afficher les détails" pour afficher les détails du
         député/groupe.
+      </span>
+
+      {/* Details */}
+      <span className='title'>Fiches d'informations</span>
+
+      <FaBalanceScale />
+      <span>
+        Dans une fiche de député/groupe, cliquez sur "Comparer" pour évaluer ses
+        caractéristiques par rapport à celles d'un autre groupe/député.
+      </span>
+
+      <BsLightbulb />
+      <span>
+        Dans une fiche de député/groupe, cliquez sur "Voir dans le graphe" pour
+        voir le député/groupe clairement dans le graphe.
+      </span>
+
+      <BsListUl />
+      <span>
+        Dans une fiche de groupe, onglet "Membres", cliquez sur un député pour
+        afficher sa fiche.
       </span>
     </div>
   );

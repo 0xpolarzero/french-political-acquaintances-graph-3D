@@ -5,7 +5,7 @@ import {
   getIndividualColor,
 } from './individuals';
 import { searchSystem } from './search';
-import { organizeDrawerData, formatStatsForChart } from './drawer';
+import { organizeDrawerData, formatStatsForChart, renderLabel } from './drawer';
 import { getAverage, getGroupPower } from './stats';
 
 export {
@@ -16,6 +16,7 @@ export {
   searchSystem,
   organizeDrawerData,
   formatStatsForChart,
+  renderLabel,
   getAverage,
   getGroupPower,
 };

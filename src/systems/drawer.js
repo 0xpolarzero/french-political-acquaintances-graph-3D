@@ -269,3 +269,30 @@ export const formatStatsForChart = (baseData, compareData, graph) => {
 
   return formatted;
 };
+
+const RADIAN = Math.PI / 180;
+export const renderLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+  index,
+  payload,
+}) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 1.1;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  return (
+    <text
+      x={x}
+      y={y}
+      fill={payload.color}
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline='central'
+    >
+      {payload.name}
+    </text>
+  );
+};

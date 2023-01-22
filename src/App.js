@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     setData();
 
-    setDrawer(null, null, 'compare');
+    setDrawer(null, null, 'global');
   }, []);
 
   return (

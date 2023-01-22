@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AutoComplete } from 'antd';
 import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
+import { AiOutlineArrowsAlt } from 'react-icons/ai';
 import { ImUser } from 'react-icons/im';
 import { useData, useInteraction, useInterface } from 'src/stores';
 import { searchSystem } from 'src/systems';
@@ -40,6 +41,10 @@ const Hints = () => {
           </span>
         </div>
         <AutoComplete {...search} />
+        <div className={searchValue ? 'more' : 'more hidden'} onClick={onClear}>
+          <AiOutlineArrowsAlt />
+          <span className='content'>Retour à la vue normale</span>
+        </div>
       </div>
       <div className={isHidden ? 'interface hints hidden' : 'interface hints'}>
         <div className='left'>

@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import InfoCollapse from './Informations';
 import StatsVisualization from 'src/components/Interface/Drawer/Stats';
 import { organizeDrawerData } from 'src/systems';
-import { useData, useInterface, useStats } from 'src/stores';
+import { useData, useInteraction, useInterface, useStats } from 'src/stores';
 
 const IndividualDrawer = () => {
   const { drawer, setDrawer, closeDrawer } = useInterface();
+  const { setSearch } = useInteraction();
   const { organizedData: groupsData } = useData();
   const { setCompareBase } = useStats();
   const { data, type, isOpen } = drawer;
@@ -66,6 +67,17 @@ const IndividualDrawer = () => {
           </button>
           <button onClick={() => setDrawer(null, groupData, 'group')}>
             Voir la fiche du groupe
+          </button>
+          <button
+            onClick={() =>
+              setSearch({
+                value: `${data.firstName} ${data.lastName}`,
+                type: 'individual',
+                item: { ...data },
+              })
+            }
+          >
+            Voir dans le graphe
           </button>
         </>
       }

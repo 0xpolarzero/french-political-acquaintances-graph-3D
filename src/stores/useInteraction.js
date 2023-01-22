@@ -4,9 +4,14 @@ export default create((set, get) => ({
   // Search
   search: null,
   onSearch: (value, data) => {
+    console.log(data);
     set({ search: data });
   },
   onClear: () => set({ search: null }),
+  setSearch: (search) => {
+    console.log(search);
+    set({ search });
+  },
 
   // Hovered
   hovered: { item: null, type: null },

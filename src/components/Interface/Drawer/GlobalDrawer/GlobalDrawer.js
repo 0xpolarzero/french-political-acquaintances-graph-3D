@@ -47,7 +47,6 @@ const GlobalDrawer = () => {
     if (!organizedData) return;
 
     const organized = organizeData();
-    console.log(organized);
     setFormattedData(organized);
   }, [organizedData]);
 

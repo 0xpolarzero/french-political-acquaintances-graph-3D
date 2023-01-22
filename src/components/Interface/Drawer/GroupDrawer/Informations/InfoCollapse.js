@@ -4,7 +4,7 @@ import { useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 
-const InfoCollapse = ({ data, onlyInfo = true }) => {
+const InfoCollapse = ({ data, onlyInfo = false }) => {
   const { setDrawer } = useInterface();
 
   const columnsGeneral = [

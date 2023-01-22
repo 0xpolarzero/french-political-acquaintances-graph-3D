@@ -4,8 +4,8 @@ import { useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 
-const InfoCollapse = ({ data }) => {
-  const { setDrawer, closeDrawer } = useInterface();
+const InfoCollapse = ({ data, onlyInfo = true }) => {
+  const { setDrawer } = useInterface();
 
   const columnsGeneral = [
     {
@@ -33,48 +33,50 @@ const InfoCollapse = ({ data }) => {
     'majorityScore',
   ];
 
-  const columnsMembers = Object.keys(data.members).map((key) => ({
-    key,
-    title: data.members[key].type,
-    dataIndex: key,
-    sorter: sortableKeys.includes(key)
-      ? (a, b) => Number(a[key]) - Number(b[key])
-      : false,
-    render: (value, index) => {
-      if (key === 'raw') return null;
-      if (key === 'experience') return numberToPeriod(value);
-      if (
-        key === 'participationScore' ||
-        key === 'loyaltyScore' ||
-        key === 'majorityScore'
-      ) {
-        return `${value} %`;
-      }
-      if (key === 'image') {
-        return (
-          <img
-            key={index}
-            src={value}
-            alt='member'
-            style={{ width: 'auto', height: 100 }}
-          />
-        );
-      }
-      return value;
-    },
-    onCell: (record) => {
-      return {
-        onClick: () => {
-          setDrawer(null, record.raw, 'individual');
-        },
-        colSpan: key === 'raw' ? 0 : 1,
-      };
-    },
-    colSpan: key === 'raw' ? 0 : 1,
-  }));
+  const columnsMembers =
+    !onlyInfo &&
+    Object.keys(data.members).map((key) => ({
+      key,
+      title: data.members[key].type,
+      dataIndex: key,
+      sorter: sortableKeys.includes(key)
+        ? (a, b) => Number(a[key]) - Number(b[key])
+        : false,
+      render: (value, index) => {
+        if (key === 'raw') return null;
+        if (key === 'experience') return numberToPeriod(value);
+        if (
+          key === 'participationScore' ||
+          key === 'loyaltyScore' ||
+          key === 'majorityScore'
+        ) {
+          return `${value} %`;
+        }
+        if (key === 'image') {
+          return (
+            <img
+              key={index}
+              src={value}
+              alt='member'
+              style={{ width: 'auto', height: 100 }}
+            />
+          );
+        }
+        return value;
+      },
+      onCell: (record) => {
+        return {
+          onClick: () => {
+            setDrawer(null, record.raw, 'individual');
+          },
+          colSpan: key === 'raw' ? 0 : 1,
+        };
+      },
+      colSpan: key === 'raw' ? 0 : 1,
+    }));
 
   const dataSource =
-    data.members.length !== 0 &&
+    data.members?.length !== 0 &&
     data.members[Object.keys(data.members)[0]].value.map((_, index) => {
       return Object.keys(data.members).reduce((acc, key) => {
         acc[key] = data.members[key].value[index];
@@ -83,7 +85,7 @@ const InfoCollapse = ({ data }) => {
     });
 
   return (
-    <Collapse accordion ghost>
+    <Collapse defaultActiveKey={['1']} accordion ghost>
       {/* General informations */}
       <Panel
         header={<span className='panel-header'>Informations générales</span>}
@@ -97,16 +99,18 @@ const InfoCollapse = ({ data }) => {
       </Panel>
 
       {/* Members informations */}
-      <Panel
-        header={<span className='panel-header'>Membres du groupe</span>}
-        key='2'
-      >
-        <Table
-          dataSource={dataSource}
-          columns={columnsMembers}
-          className='cursor'
-        />
-      </Panel>
+      {data.members.length !== 0 && !onlyInfo && (
+        <Panel
+          header={<span className='panel-header'>Membres du groupe</span>}
+          key='2'
+        >
+          <Table
+            dataSource={dataSource}
+            columns={columnsMembers}
+            className='cursor'
+          />
+        </Panel>
+      )}
     </Collapse>
   );
 };

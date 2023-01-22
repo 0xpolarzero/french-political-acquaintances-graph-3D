@@ -2,8 +2,8 @@ import * as CHARTS from 'recharts';
 import { ErrorComponent } from './Utils';
 import { formatStatsForChart } from 'src/systems';
 
-const ChartRadar = ({ statsA, statsB, labelA, labelB, color }) => {
-  const data = formatStatsForChart(statsA, statsB, 'radar');
+const ChartRadar = ({ statsA, statsB, statsGlobal, labelA, labelB, color }) => {
+  const data = formatStatsForChart(statsA, statsB, statsGlobal, 'radar');
   const baseColor = color ? color : '#8884d8';
   const compareColor = color ? '#999999' : '#82ca9d';
 
@@ -36,8 +36,8 @@ const ChartRadar = ({ statsA, statsB, labelA, labelB, color }) => {
   );
 };
 
-const ChartBar = ({ statsA, statsB, labelA, labelB, color }) => {
-  const data = formatStatsForChart(statsA, statsB, 'bar');
+const ChartBar = ({ statsA, statsB, statsGlobal, labelA, labelB, color }) => {
+  const data = formatStatsForChart(statsA, statsB, statsGlobal, 'bar');
   const baseColor = color ? color : '#8884d8';
   const compareColor = color ? '#999999' : '#82ca9d';
 
@@ -57,7 +57,7 @@ const ChartBar = ({ statsA, statsB, labelA, labelB, color }) => {
           }}
         >
           <CHARTS.CartesianGrid strokeDasharray='3 3' />
-          <CHARTS.XAxis dataKey='name' />
+          <CHARTS.XAxis dataKey='type' />
           <CHARTS.YAxis />
           <CHARTS.Tooltip />
           <CHARTS.Legend />

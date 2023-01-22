@@ -244,7 +244,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto 1fr;
-  justify-items: center;
   align-items: center;
   gap: 1rem;
   min-height: 100%;
@@ -257,6 +256,11 @@
   width: 100%;
 }
 
+.compare-info {
+  align-self: flex-start;
+}
+
 .compare-stats {
+  justify-self: center;
   padding: 1rem 2rem;
 }

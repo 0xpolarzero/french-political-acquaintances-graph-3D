@@ -22,7 +22,7 @@ const InfoCollapse = ({ data, groupData }) => {
       title: '',
       dataIndex: 'value',
       onCell: (record, index) => {
-        if (record.type === 'Groupe')
+        if (record.type === 'Groupe' && groupData)
           return {
             onClick: () => setDrawer(null, groupData, 'group'),
           };
@@ -69,7 +69,7 @@ const InfoCollapse = ({ data, groupData }) => {
       >
         <Table
           dataSource={Object.values(data.general)}
-          columns={columnsWithImage}
+          columns={data.image ? columnsWithImage : columns}
           pagination={false}
         ></Table>
       </Panel>

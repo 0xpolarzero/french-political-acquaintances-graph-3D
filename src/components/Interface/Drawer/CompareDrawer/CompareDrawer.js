@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { AutoComplete, Drawer } from 'antd';
 import StatsVisualization from 'src/components/Interface/Drawer/Stats';
-import { organizeDrawerData, searchSystem } from 'src/systems';
-import { useData, useInterface, useStats } from 'src/stores';
-import { useEffect, useState } from 'react';
 import InfoCollapseIndividual from '../IndividualDrawer/Informations';
 import InfoCollapseGroup from '../GroupDrawer/Informations';
+import { organizeDrawerData, searchSystem } from 'src/systems';
+import { useData, useInterface, useStats } from 'src/stores';
 
 // When opened, always a compareBase but compareTarget can be null
 // If so, let the user select a compareTarget

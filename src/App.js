@@ -26,7 +26,7 @@ const App = () => {
             </ConfigProvider>
           </>
         ) : (
-          <div className='loading'>Loading...</div>
+          <div className='loading'>Chargement...</div>
         )
       ) : (
         <div className='error'>Error!</div>

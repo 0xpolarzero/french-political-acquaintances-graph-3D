@@ -1,0 +1,90 @@
+.hints {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hints > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.hints .right {
+  align-items: flex-end;
+}
+
+.hints > div > div,
+.search .more {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Transitions */
+
+.hints > div > div > svg,
+.search .more > svg {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.hints > div > div span.content,
+.search .more span.content {
+  transition: transform 0.3s ease;
+}
+
+.hints > .left > div:hover span.content,
+.search > .more:hover span.content {
+  transform: translateX(1rem);
+}
+
+.hints > .right > div:hover span.content {
+  transform: translateX(-1rem);
+}
+
+.hints > div > div:hover > svg,
+.search .more:hover > svg {
+  opacity: 1;
+}
+
+/**
+    * Search
+    */
+
+.search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.search .ant-select {
+  justify-self: flex-end;
+}
+
+.search > div {
+  padding: 1rem 2rem;
+}
+.search .more {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.search .more.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,28 @@
+.stats {
+  color: #fff;
+}
+
+.compare-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  min-height: 100%;
+}
+
+.compare-search {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.compare-info {
+  align-self: flex-start;
+}
+
+.compare-stats {
+  justify-self: center;
+  padding: 1rem 2rem;
+}

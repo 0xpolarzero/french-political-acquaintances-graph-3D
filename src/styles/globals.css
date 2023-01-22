@@ -117,3 +117,7 @@ blockquote {
   color: #ff6666;
   font-weight: 700;
 }
+
+.cursor {
+  cursor: pointer;
+}

@@ -6,6 +6,7 @@ import { AiOutlineArrowsAlt } from 'react-icons/ai';
 import { ImUser } from 'react-icons/im';
 import { useData, useInteraction, useInterface } from 'src/stores';
 import { searchSystem } from 'src/systems';
+import { TbArrowLeft, TbArrowRight } from 'react-icons/tb';
 
 const Hints = () => {
   const { organizedData: data } = useData();
@@ -80,6 +81,15 @@ const Hints = () => {
 
         <div className='right'>
           {/* Show interface on click */}
+          {hovered.type === 'group' &&
+            group &&
+            hovered.item.id === group.id && (
+              <div className='action'>
+                <span className='content'>Tourner autour du groupe</span>
+                <TbArrowLeft />
+                <TbArrowRight />
+              </div>
+            )}
           <div className='action'>
             {hovered.type === 'group' ? (
               group && hovered.item.id === group.id ? (

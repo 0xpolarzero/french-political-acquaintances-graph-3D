@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import InfoCollapse from './Informations';
 import StatsVisualization from 'src/components/Interface/Drawer/Stats';
 import { organizeDrawerData } from 'src/systems';
-import { useData, useInterface } from 'src/stores';
+import { useData, useInterface, useStats } from 'src/stores';
 
 const IndividualDrawer = () => {
   const { drawer, setDrawer, closeDrawer } = useInterface();
   const { organizedData: groupsData } = useData();
+  const { setCompareBase } = useStats();
   const { data, type, isOpen } = drawer;
   const [dataCurated, setDataCurated] = useState({
     general: {},
@@ -54,12 +55,19 @@ const IndividualDrawer = () => {
       destroyOnClose
       title={`${data.firstName} ${data.lastName} (${data.groupShort})`}
       extra={
-        <button
-          onClick={() => setDrawer(null, groupData, 'group')}
-          // style={{ color: groupData.associatedColor }}
-        >
-          Voir la fiche du groupe
-        </button>
+        <>
+          <button
+            onClick={() => {
+              setCompareBase({ data, type });
+              setDrawer(null, null, 'compare');
+            }}
+          >
+            Comparer
+          </button>
+          <button onClick={() => setDrawer(null, groupData, 'group')}>
+            Voir la fiche du groupe
+          </button>
+        </>
       }
     >
       <InfoCollapse data={dataCurated} groupData={groupData} />

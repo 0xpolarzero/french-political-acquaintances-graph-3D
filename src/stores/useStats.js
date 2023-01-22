@@ -4,6 +4,7 @@ export default create((set) => ({
   compareBase: null,
   compareTarget: null,
   resetCompare: () => set({ compareBase: null, compareTarget: null }),
+  setCompareBase: (data) => set({ compareBase: data }),
 
   onSearch: (value, data, at) => {
     if (data.item.firstName) {

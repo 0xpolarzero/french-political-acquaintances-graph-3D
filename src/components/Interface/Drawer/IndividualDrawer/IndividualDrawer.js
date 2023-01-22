@@ -1,7 +1,7 @@
 import { Drawer } from 'antd';
 import { useEffect, useState } from 'react';
 import InfoCollapse from './Informations';
-import StatsVisualization from './Stats';
+import StatsVisualization from 'src/components/Interface/Drawer/Stats';
 import { organizeDrawerData } from 'src/systems';
 import { useData, useInterface } from 'src/stores';
 
@@ -31,13 +31,14 @@ const IndividualDrawer = () => {
 
     const { generalData, politicalData, contactData, statsData } =
       organizeDrawerData.individual(curated);
+    const { statsData: groupStatsData } = organizeDrawerData.group(groupData);
 
     setDataCurated({
       general: generalData,
       political: politicalData,
       contact: contactData,
       individualStats: statsData,
-      groupStats: groupData.stats.average,
+      groupStats: groupStatsData.group,
       image: data.image,
     });
   }, [data]);
@@ -64,10 +65,10 @@ const IndividualDrawer = () => {
       <InfoCollapse data={dataCurated} groupData={groupData} />
       {/* Stats */}
       <StatsVisualization
-        individualData={dataCurated.individualStats}
-        groupData={dataCurated.groupStats}
-        individualLabel={`${data.firstName} ${data.lastName}`}
-        groupLabel={`${data.groupShort} (moyenne)`}
+        statsA={dataCurated.individualStats}
+        statsB={dataCurated.groupStats}
+        labelA={`${data.firstName} ${data.lastName}`}
+        labelB={`${data.groupShort} (moyenne)`}
       />
       <div className='last-update' style={{ marginTop: '1rem', opacity: 0.7 }}>
         <p>

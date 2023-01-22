@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 
 const ErrorComponent = ({ data }) => {
   const [missingData, setMissingData] = useState([]);
+  console.log('ErrorComponent', data);
 
   useEffect(() => {
-    if (Object.keys(data).length === 0) return;
+    if (!data || data.length) return;
 
     // Detect errors
     let status = {};
-    Object.keys(data).forEach((key) => {
-      status[data[key].type] = isNaN(data[key].A) || isNaN(data[key].B);
-    });
+    data.map((item) => (status[item.type] = isNaN(item.A) || isNaN(item.B)));
+
     // If it's errored, add the key to the errors array
     const errors = Object.keys(status).reduce((acc, key) => {
       if (status[key]) acc.push(key);

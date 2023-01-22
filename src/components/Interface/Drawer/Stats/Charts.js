@@ -2,38 +2,31 @@ import * as CHARTS from 'recharts';
 import { ErrorComponent } from './Utils';
 import { formatStatsForChart } from 'src/systems';
 
-const ChartRadar = ({
-  individualData,
-  groupData,
-  individualLabel,
-  groupLabel,
-}) => {
-  const data = formatStatsForChart.individual(
-    individualData,
-    groupData,
-    'radar',
-  );
+const ChartRadar = ({ statsA, statsB, labelA, labelB, color }) => {
+  const data = formatStatsForChart(statsA, statsB, 'radar');
+  const baseColor = color ? color : '#8884d8';
+  const compareColor = color ? '#999999' : '#82ca9d';
 
   return (
     <>
-      <ErrorComponent data={individualData} />
+      <ErrorComponent data={data} />
       <CHARTS.ResponsiveContainer width='100%' height={400}>
         <CHARTS.RadarChart cx='50%' cy='50%' outerRadius='80%' data={data}>
           <CHARTS.PolarGrid />
           <CHARTS.PolarAngleAxis dataKey='type' />
-          <CHARTS.PolarRadiusAxis angle={45} domain={[0, 100]} />
+          <CHARTS.PolarRadiusAxis angle={60} domain={[0, 100]} />
           <CHARTS.Radar
-            name={individualLabel}
+            name={labelA}
             dataKey='A'
-            stroke='#8884d8'
-            fill='#8884d8'
+            stroke={baseColor}
+            fill={baseColor}
             fillOpacity={0.7}
           />
           <CHARTS.Radar
-            name={groupLabel}
+            name={labelB}
             dataKey='B'
-            stroke='#82ca9d'
-            fill='#82ca9d'
+            stroke={compareColor}
+            fill={compareColor}
             fillOpacity={0.5}
           />
           <CHARTS.Legend />
@@ -43,17 +36,14 @@ const ChartRadar = ({
   );
 };
 
-const ChartBar = ({
-  individualData,
-  groupData,
-  individualLabel,
-  groupLabel,
-}) => {
-  const data = formatStatsForChart.individual(individualData, groupData, 'bar');
+const ChartBar = ({ statsA, statsB, labelA, labelB, color }) => {
+  const data = formatStatsForChart(statsA, statsB, 'bar');
+  const baseColor = color ? color : '#8884d8';
+  const compareColor = color ? '#999999' : '#82ca9d';
 
   return (
     <>
-      <ErrorComponent data={individualData} />
+      <ErrorComponent data={data} />
       <CHARTS.ResponsiveContainer width='100%' height={400}>
         <CHARTS.BarChart
           width={500}
@@ -71,8 +61,8 @@ const ChartBar = ({
           <CHARTS.YAxis />
           <CHARTS.Tooltip />
           <CHARTS.Legend />
-          <CHARTS.Bar dataKey='A' name={individualLabel} fill='#8884d8' />
-          <CHARTS.Bar dataKey='B' name={groupLabel} fill='#82ca9d' />
+          <CHARTS.Bar dataKey='A' name={labelA} fill={baseColor} />
+          <CHARTS.Bar dataKey='B' name={labelB} fill={compareColor} />
         </CHARTS.BarChart>
       </CHARTS.ResponsiveContainer>
     </>

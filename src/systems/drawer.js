@@ -104,15 +104,21 @@ export const organizeDrawerData = {
     };
 
     const statsData = {
-      loyalty: { type: 'Loyauté', value: data.loyaltyScore },
-      majority: { type: 'Majorité', value: data.majorityScore },
+      loyalty: {
+        type: 'Loyauté',
+        value: (Number(data.loyaltyScore) * 100).toFixed(2),
+      },
+      majority: {
+        type: 'Majorité',
+        value: (Number(data.majorityScore) * 100).toFixed(2),
+      },
       participation: {
         type: 'Participation',
-        value: data.participationScore,
+        value: (Number(data.participationScore) * 100).toFixed(2),
       },
       specParticipation: {
         type: 'Participation (spécialité)',
-        value: data.specParticipationScore,
+        value: (Number(data.specParticipationScore) * 100).toFixed(2),
       },
     };
 
@@ -207,7 +213,7 @@ export const organizeDrawerData = {
       return acc;
     }, {});
 
-    let statsData = {};
+    let statsData = { group: {}, global: {} };
     const groupStats = data.stats.average;
     const globalStats = data.stats.global;
 
@@ -223,10 +229,13 @@ export const organizeDrawerData = {
     ];
 
     stats.forEach((stat) => {
-      statsData[stat.key] = {
+      statsData.group[stat.key] = {
         type: stat.type,
-        group: groupStats[stat.key],
-        global: globalStats[stat.key],
+        value: groupStats[stat.key],
+      };
+      statsData.global[stat.key] = {
+        type: stat.type,
+        value: globalStats[stat.key],
       };
     });
 
@@ -238,46 +247,48 @@ export const organizeDrawerData = {
   },
 };
 
-export const formatStatsForChart = {
-  individual: (baseData, compareData, graph) => {
-    const max = 100;
+export const formatStatsForChart = (baseData, compareData, graph) => {
+  console.log('formatStatsForChart', baseData, compareData, graph);
+  // Find all keys baseData and compareData have in common
+  const keys = Object.keys(baseData).filter((key) => compareData[key]);
+  const max = 100;
 
-    const formatted = Object.keys(baseData).map((key) => {
-      const type = baseData[key].type;
-      const individualValue = baseData[key].value;
-      const groupValue = compareData[key];
+  const formatted = keys.map((key) => {
+    const type = baseData[key].type;
+    const baseValue = baseData[key].value;
+    const compareValue = compareData[key].value || compareData[key].group;
 
-      const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
+    const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
 
-      return {
-        type,
-        A: Number((individualValue * 100).toFixed(2)),
-        B: Number(groupValue).toFixed(2),
-        ...ref,
-      };
-    });
+    return {
+      type,
+      A: Number(baseValue).toFixed(2),
+      B: Number(compareValue).toFixed(2),
+      ...ref,
+    };
+  });
 
-    return formatted;
-  },
-
-  group: (data, graph) => {
-    const max = 100;
-
-    const formatted = Object.keys(data).map((key) => {
-      const type = data[key].type;
-      const groupValue = data[key].group;
-      const globalValue = data[key].global;
-
-      const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
-
-      return {
-        type,
-        A: Number(Number(groupValue).toFixed(2)),
-        B: Number(Number(globalValue).toFixed(2)),
-        ...ref,
-      };
-    });
-
-    return formatted;
-  },
+  return formatted;
 };
+
+// group: (data, graph) => {
+//   const max = 100;
+
+//   const formatted = Object.keys(data).map((key) => {
+//     const type = data[key].type;
+//     const groupValue = data[key].group;
+//     const globalValue = data[key].global;
+
+//     const ref = graph === 'radar' ? { fullMark: max } : { amt: max };
+
+//     return {
+//       type,
+//       A: Number(Number(groupValue).toFixed(2)),
+//       B: Number(Number(globalValue).toFixed(2)),
+//       ...ref,
+//     };
+//   });
+
+//   return formatted;
+// },
+// };

@@ -3,8 +3,6 @@ import { formatStatsForChart } from 'src/systems';
 import { ErrorComponent } from './Utils';
 
 const ChartRadar = ({ data, name, color }) => {
-  const formattedData = formatStatsForChart.group(data, 'radar');
-
   return (
     <>
       <ErrorComponent data={formattedData} />

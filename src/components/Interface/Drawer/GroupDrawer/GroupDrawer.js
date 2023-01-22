@@ -3,7 +3,7 @@ import { Drawer } from 'antd';
 import { organizeDrawerData } from 'src/systems';
 import { useInterface } from 'src/stores';
 import InfoCollapse from './Informations';
-import StatsVisualization from './Stats';
+import StatsVisualization from 'src/components/Interface/Drawer/Stats';
 
 const GroupDrawer = () => {
   const { drawer, closeDrawer } = useInterface();
@@ -48,8 +48,10 @@ const GroupDrawer = () => {
         data={{ general: dataCurated.general, members: dataCurated.members }}
       />
       <StatsVisualization
-        data={dataCurated.stats}
-        name={data.shortName}
+        statsA={dataCurated.stats.group}
+        statsB={dataCurated.stats.global}
+        labelA={data.shortName}
+        labelB='Global'
         color={data.associatedColor}
       />
 

@@ -94,6 +94,11 @@ button.special:hover {
   background: rgba(255, 102, 102, 0.9);
 }
 
+button.active {
+  background: rgba(255, 102, 102, 0.5);
+  opacity: 1;
+}
+
 blockquote {
   margin: 0;
   padding: 0;

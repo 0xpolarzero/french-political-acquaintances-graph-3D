@@ -46,7 +46,7 @@
 
 .overlay .header {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
@@ -54,15 +54,24 @@
 }
 
 .overlay .header button {
-  /* don't stretch */
   width: min-content;
   white-space: nowrap;
 }
 
+.overlay .quality {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.overlay .quality span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .overlay .close {
-  /* position: absolute;
-    top: 1rem;
-    right: 1rem; */
+  display: flex;
   opacity: 0.7;
   cursor: pointer;
   transition: opacity 0.3s ease;

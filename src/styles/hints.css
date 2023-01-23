@@ -69,10 +69,12 @@
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
   column-gap: 1rem;
+  pointer-events: none;
 }
 
 .search .ant-select {
   justify-self: flex-end;
+  pointer-events: all;
 }
 
 .search > div {

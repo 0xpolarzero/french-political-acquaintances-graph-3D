@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
-import { Collapse, Tooltip } from 'antd';
-import { GiClick, GiHolosphere } from 'react-icons/gi';
+import { Collapse, Divider, Tooltip } from 'antd';
 import { BsArrowBarRight, BsLightbulb, BsListUl } from 'react-icons/bs';
+import { CgPerformance } from 'react-icons/cg';
+import { FaBalanceScale } from 'react-icons/fa';
+import { GiClick, GiHolosphere } from 'react-icons/gi';
 import { ImCancelCircle, ImSearch, ImWarning } from 'react-icons/im';
+import { MdHighQuality } from 'react-icons/md';
 import {
   TbArrowLeft,
   TbArrowRight,
@@ -10,13 +13,13 @@ import {
   TbQuestionMark,
   TbSelect,
 } from 'react-icons/tb';
-import { FaBalanceScale } from 'react-icons/fa';
-import { useData, useInterface } from 'src/stores';
+import { useData, useGraphics, useInterface } from 'src/stores';
 
 const { Panel } = Collapse;
 
 const Overlay = () => {
   const { organizedData: data } = useData();
+  const { highQuality, setHighQuality } = useGraphics();
   const { isOverlayVisible, setIsOverlayVisible, setDrawer } = useInterface();
 
   const closeInterface = (e) => {
@@ -42,6 +45,36 @@ const Overlay = () => {
         >
           Voir les statistiques globales
         </button>
+        <div className='interface quality'>
+          <button style={{ cursor: 'default', pointerEvents: 'none' }}>
+            Privilégier:{' '}
+          </button>
+          <button
+            onClick={() => setHighQuality(true)}
+            className={highQuality ? 'active' : ''}
+          >
+            <Tooltip
+              title='Les éclairages sont conservés, et les sphères y sont sensibles. Cliquez pour privilégier les performances.'
+              zIndex={10000}
+            >
+              <MdHighQuality />
+              <span>la qualité</span>
+            </Tooltip>
+          </button>
+          <Divider type='vertical' />
+          <button
+            onClick={() => setHighQuality(false)}
+            className={highQuality ? '' : 'active'}
+          >
+            <Tooltip
+              title='Les éclairages sont désactivés, et les sphères ne sont plus sensibles à la lumière. Cliquez pour privilégier la qualité.'
+              zIndex={10000}
+            >
+              <CgPerformance />
+              <span>les performances</span>
+            </Tooltip>
+          </button>
+        </div>
         <div
           className='interface close'
           onClick={() => setIsOverlayVisible(false)}
